@@ -22,17 +22,24 @@ body {
   box-sizing: border-box;
 }
 
+/* 全要素での横スクロール防止 */
+*, *::before, *::after {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
 /* コンテナ */
 .container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 20px 20px 0 20px;
+  padding: 20px 16px 0 16px;
   display: grid;
   grid-template-columns: 1fr;
   gap: 16px;
   min-height: calc(100vh - 40px);
   width: 100%;
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 /* ヘッダー */
@@ -40,9 +47,10 @@ body {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   border-radius: 12px;
-  padding: 16px 30px;
+  padding: 16px 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   z-index: 1000;
+  overflow-x: hidden;
 }
 
 .header-content {
@@ -629,8 +637,13 @@ body {
 }
 
 @media (max-width: 480px) {
+  .container {
+    padding: 15px 12px 0 12px;
+  }
+
   .header {
-    padding: 20px;
+    padding: 15px 12px;
+    border-radius: 8px;
   }
 
   .header h1 {
@@ -654,7 +667,11 @@ body {
 
   .generator-container .controls {
     order: 2 !important;
-    padding: 15px;
+    padding: 12px;
+  }
+
+  .main-content {
+    padding: 24px 12px;
   }
 
   .generator-container .preview {
@@ -1078,8 +1095,10 @@ body {
   padding: 40px 0 20px;
   background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
   color: white;
-  width: 100vw;
-  margin-inline: calc(50% - 50vw);
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  border-radius: 8px 8px 0 0;
 }
 
 .footer-content {
@@ -1220,6 +1239,7 @@ body {
 @media (max-width: 480px) {
   .footer-section h3 {
     font-size: 1.1rem;
+    justify-content: center;
   }
 
   .footer-section h4 {

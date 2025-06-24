@@ -2578,16 +2578,20 @@ body {
 }
 
 .tool-details h4 {
-  margin-top: 25px;
+  margin-top: 32px;
   margin-bottom: 15px;
   padding: 0;
   border-bottom: none;
-  color: #667eea;
+  color: #222;
   font-weight: 600;
 }
 
 .tool-details h4:first-child {
   margin-top: 0;
+}
+
+.tool-details h4 i {
+  color: #667eea;
 }
 
 .tool-details p {
@@ -2626,7 +2630,7 @@ body {
 
   .seo-content h4 {
     font-size: 1.2rem;
-    margin: 25px 0 12px;
+    margin: 32px 0 12px;
   }
 
   .tool-details {
@@ -2686,7 +2690,7 @@ body {
 
   .seo-content h4 {
     font-size: 1.1rem;
-    margin: 20px 0 10px;
+    margin: 32px 0 10px;
   }
 
   .tool-details {

@@ -1571,6 +1571,7 @@ const modalData = {
                 <li><strong>フレックスボックスジェネレーター</strong> - レイアウト設定の可視化</li>
                 <li><strong>テキストシャドウジェネレーター</strong> - 文字の影効果</li>
                 <li><strong>トランスフォームジェネレーター</strong> - 回転・拡大・移動・傾斜</li>
+                <li><strong>CSSアニメーションジェネレーター</strong> - キーフレームアニメーション効果の作成</li>
                 <li><strong>クリップパスジェネレーター</strong> - 複雑な切り抜き形状の作成</li>
                 <li><strong>マージン・パディングジェネレーター</strong> - 要素の余白設定</li>
             </ul>
@@ -1745,6 +1746,7 @@ const modalDataEn = {
                 <li><strong>Flexbox Generator</strong> - Visualize layout settings</li>
                 <li><strong>Text Shadow Generator</strong> - Text shadow effects</li>
                 <li><strong>Transform Generator</strong> - Rotation, scaling, translation, skewing</li>
+                <li><strong>CSS Animation Generator</strong> - Create keyframe animation effects</li>
                 <li><strong>Clip Path Generator</strong> - Create complex clipping shapes</li>
                 <li><strong>Margin & Padding Generator</strong> - Element spacing settings</li>
             </ul>
@@ -1888,9 +1890,24 @@ function toggleHeaderNav() {
     // モバイル版でのみ動作（768px以下）
     if (window.innerWidth <= 768) {
         const headerNav = document.querySelector('.header-nav');
+        const navButton = document.querySelector('.nav-button');
+        const navMenu = document.querySelector('.nav-menu');
 
-        if (headerNav) {
+        if (headerNav && navButton && navMenu) {
             headerNav.classList.toggle('active');
+            
+            // メニューが開かれる時の位置調整
+            if (headerNav.classList.contains('active')) {
+                const buttonRect = navButton.getBoundingClientRect();
+                const headerRect = document.querySelector('.header').getBoundingClientRect();
+                
+                // ボタンの下に配置（絶対位置で画面全体に対して）
+                navMenu.style.top = (buttonRect.bottom + window.scrollY - 4) + 'px';
+                navMenu.style.left = '16px';
+                navMenu.style.right = '16px';
+                navMenu.style.width = 'auto';
+            }
+            
             console.log('Header nav active state:', headerNav.classList.contains('active'));
         } else {
             console.log('Header nav element not found');
@@ -1906,7 +1923,31 @@ window.addEventListener('resize', function() {
     if (headerNav && window.innerWidth > 768) {
         headerNav.classList.remove('active');
     }
+    
+    // モバイルメニューが開いている場合は位置を再調整
+    if (headerNav && headerNav.classList.contains('active') && window.innerWidth <= 768) {
+        updateMobileMenuPosition();
+    }
 });
+
+// スクロール時にもメニュー位置を調整
+window.addEventListener('scroll', function() {
+    const headerNav = document.querySelector('.header-nav');
+    if (headerNav && headerNav.classList.contains('active') && window.innerWidth <= 768) {
+        updateMobileMenuPosition();
+    }
+});
+
+// モバイルメニューの位置を更新する関数
+function updateMobileMenuPosition() {
+    const navButton = document.querySelector('.nav-button');
+    const navMenu = document.querySelector('.nav-menu');
+    
+    if (navButton && navMenu) {
+        const buttonRect = navButton.getBoundingClientRect();
+        navMenu.style.top = (buttonRect.bottom + window.scrollY + 8) + 'px';
+    }
+}
 
 // モバイルナビゲーション切り替え関数
 function toggleMobileNav() {
@@ -1976,6 +2017,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
+    });
+
+    // ヘッダーナビゲーションメニューのリンククリック時にメニューを閉じる
+    const headerNavLinks = document.querySelectorAll('.header-nav .nav-menu a');
+    headerNavLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                const headerNav = document.querySelector('.header-nav');
+                if (headerNav) {
+                    headerNav.classList.remove('active');
+                }
+            }
+        });
+    });
+
+    // メニュー外をクリックした時にメニューを閉じる
+    document.addEventListener('click', function(event) {
+        const headerNav = document.querySelector('.header-nav');
+        const navButton = document.querySelector('.nav-button');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        if (headerNav && headerNav.classList.contains('active') && 
+            !navButton.contains(event.target) && 
+            !navMenu.contains(event.target)) {
+            headerNav.classList.remove('active');
+        }
     });
 
     // フッターのリンクでタブ切り替え

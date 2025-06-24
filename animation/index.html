@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-V3DKYRP695"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-V3DKYRP695');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9780704405934373"
+    crossorigin="anonymous"></script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSSアニメーションジェネレーター - キーフレームアニメーション作成ツール</title>
+<meta name="description" content="【完全無料】CSSキーフレームアニメーションを簡単作成！フェードイン、スライド、回転、バウンス等のプリセット付き。リアルタイムプレビューでコピペ即完了。">
+<meta name="keywords" content="CSS,アニメーション,キーフレーム,@keyframes,フェードイン,スライド,回転,バウンス,Webアニメーション,CSS animation">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://css-style-maker.com/animation/">
+<meta property="og:title" content="CSSアニメーションジェネレーター - キーフレームアニメーション作成ツール">
+<meta property="og:description" content="【完全無料】CSSキーフレームアニメーションを簡単作成！フェードイン、スライド、回転、バウンス等のプリセット付き。リアルタイムプレビューでコピペ即完了。">
+<meta property="og:image" content="https://css-style-maker.com/assets/image/ogp-image.jpg">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://css-style-maker.com/animation/">
+<meta property="twitter:title" content="CSSアニメーションジェネレーター - キーフレームアニメーション作成ツール">
+<meta property="twitter:description" content="【完全無料】CSSキーフレームアニメーションを簡単作成！フェードイン、スライド、回転、バウンス等のプリセット付き。リアルタイムプレビューでコピペ即完了。">
+<meta property="twitter:image" content="https://css-style-maker.com/assets/image/ogp-image.jpg">
+
+<!-- Canonical URL -->
+<link rel="canonical" href="https://css-style-maker.com/animation/">
+
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+<link rel="stylesheet" href="/assets/style/styles.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container">
+<header class="header">
+<div class="header-content">
+<div class="header-text">
+<h1><a href="../"><i class="fas fa-magic"></i> CSSジェネレーター</a></h1>
+<p>美しいCSSを簡単に生成できるツール集</p>
+</div>
+<div class="language-switcher">
+<a href="../en/animation/" class="lang-link">
+<i class="fas fa-globe"></i> English
+</a>
+</div>
+</div>
+<nav class="header-nav">
+<div class="nav-button" onclick="toggleHeaderNav()">
+<i class="fas fa-bars nav-icon"></i>
+<span class="nav-text">メニュー</span>
+<i class="fas fa-chevron-down nav-arrow"></i>
+</div>
+<ul class="nav-menu">
+<li><a href="../gradation/"><i class="fas fa-palette"></i> グラデーション</a></li>
+<li><a href="../box-shadow/"><i class="fas fa-cube"></i> ボックスシャドウ</a></li>
+<li><a href="../border-radius/"><i class="fas fa-circle"></i> 角丸</a></li>
+<li><a href="../grid/"><i class="fas fa-th-large"></i> グリッド</a></li>
+<li><a href="../flexbox/"><i class="fas fa-th"></i> フレックスボックス</a></li>
+<li><a href="../text-shadow/"><i class="fas fa-font"></i> テキストシャドウ</a></li>
+<li><a href="../transform/"><i class="fas fa-arrows-alt"></i> トランスフォーム</a></li>
+<li><a href="../margin-padding/"><i class="fas fa-expand-arrows-alt"></i> マージン・パディング</a></li>
+<li><a href="../animation/" class="active"><i class="fas fa-play"></i> アニメーション</a></li>
+</ul>
+</nav>
+</header>
+
+<main class="main-content">
+
+<div class="generator-container">
+<h2 class="mobile-title">CSSアニメーションジェネレーター</h2>
+<div class="controls">
+<h2>アニメーション設定</h2>
+
+<!-- プリセットアニメーション -->
+<div class="control-group">
+<label>プリセットアニメーション</label>
+<div class="preset-animations">
+<button onclick="applyPreset('fadeIn')" class="preset-btn">フェードイン</button>
+<button onclick="applyPreset('slideInLeft')" class="preset-btn">左スライド</button>
+<button onclick="applyPreset('slideInRight')" class="preset-btn">右スライド</button>
+<button onclick="applyPreset('slideInUp')" class="preset-btn">上スライド</button>
+<button onclick="applyPreset('slideInDown')" class="preset-btn">下スライド</button>
+<button onclick="applyPreset('rotateIn')" class="preset-btn">回転</button>
+<button onclick="applyPreset('scaleIn')" class="preset-btn">拡大</button>
+<button onclick="applyPreset('bounce')" class="preset-btn">バウンス</button>
+<button onclick="applyPreset('pulse')" class="preset-btn">パルス</button>
+<button onclick="applyPreset('shake')" class="preset-btn">振動</button>
+</div>
+</div>
+
+<!-- アニメーション名 -->
+<div class="control-group">
+<label for="animationName">アニメーション名</label>
+<input type="text" id="animationName" value="myAnimation" oninput="updateAnimation()">
+</div>
+
+<!-- 継続時間 -->
+<div class="control-group">
+<label for="duration">継続時間: <span id="duration-value">1s</span></label>
+<input type="range" id="duration" min="0.1" max="10" step="0.1" value="1" oninput="updateAnimation()">
+</div>
+
+<!-- タイミング関数 -->
+<div class="control-group">
+<label for="timingFunction">タイミング関数</label>
+<select id="timingFunction" onchange="updateAnimation()">
+<option value="ease">ease</option>
+<option value="ease-in">ease-in</option>
+<option value="ease-out">ease-out</option>
+<option value="ease-in-out">ease-in-out</option>
+<option value="linear">linear</option>
+<option value="cubic-bezier(0.25, 0.46, 0.45, 0.94)">easeOutQuad</option>
+<option value="cubic-bezier(0.55, 0.085, 0.68, 0.53)">easeInQuad</option>
+<option value="cubic-bezier(0.455, 0.03, 0.515, 0.955)">easeInOutQuad</option>
+<option value="cubic-bezier(0.25, 0.46, 0.45, 0.94)">easeOutCubic</option>
+<option value="cubic-bezier(0.175, 0.885, 0.32, 1.275)">easeOutBack</option>
+</select>
+</div>
+
+<!-- 遅延 -->
+<div class="control-group">
+<label for="delay">遅延: <span id="delay-value">0s</span></label>
+<input type="range" id="delay" min="0" max="5" step="0.1" value="0" oninput="updateAnimation()">
+</div>
+
+<!-- 反復回数 -->
+<div class="control-group">
+<label for="iterationCount">反復回数</label>
+<select id="iterationCount" onchange="updateAnimation()">
+<option value="1">1回</option>
+<option value="2">2回</option>
+<option value="3">3回</option>
+<option value="5">5回</option>
+<option value="infinite">無限</option>
+</select>
+</div>
+
+<!-- 方向 -->
+<div class="control-group">
+<label for="direction">方向</label>
+<select id="direction" onchange="updateAnimation()">
+<option value="normal">normal</option>
+<option value="reverse">reverse</option>
+<option value="alternate">alternate</option>
+<option value="alternate-reverse">alternate-reverse</option>
+</select>
+</div>
+
+<!-- 埋め込みモード -->
+<div class="control-group">
+<label for="fillMode">埋め込みモード</label>
+<select id="fillMode" onchange="updateAnimation()">
+<option value="none">none</option>
+<option value="forwards">forwards</option>
+<option value="backwards">backwards</option>
+<option value="both">both</option>
+</select>
+</div>
+
+</div>
+
+<div class="preview">
+<h3>プレビュー</h3>
+<div class="animation-preview">
+<div class="animation-target" id="animationTarget">
+Sample Text
+</div>
+</div>
+<!-- アニメーション再開始ボタン -->
+<div class="control-group">
+<button onclick="restartAnimation()" class="restart-btn">
+<i class="fas fa-redo"></i> アニメーション再実行
+</button>
+</div>
+</div>
+
+<div class="output">
+<h3>生成されたCSS</h3>
+<textarea id="cssOutput" readonly></textarea>
+<button onclick="copyCss()" class="copy-btn">
+<i class="fas fa-copy"></i> CSSをコピー
+</button>
+</div>
+</div>
+</main>
+
+<div class="banner">
+<a class="banner-link" href="https://px.a8.net/svt/ejp?a8mat=457Q3P+2VLGT6+4NIK+639IP" rel="nofollow" target="_blank">
+<img class="banner-link__image" border="0" width="728" height="90" alt="広告" src="https://www21.a8.net/svt/bgt?aid=250623205174&wid=002&eno=01&mid=s00000021710001023000&mc=1"></a>
+<img border="0" width="1" height="1" src="https://www10.a8.net/0.gif?a8mat=457Q3P+2VLGT6+4NIK+639IP" alt="">
+</div>
+
+<footer class="footer">
+<div class="footer-container">
+<div class="footer-content">
+<div class="footer-section">
+<h3><i class="fas fa-magic"></i> CSSジェネレーター</h3>
+<p>美しいCSSを簡単に生成できるツール集。Web制作を効率化し、デザインの可能性を広げます。</p>
+</div>
+<div class="footer-section">
+<h4>ツール一覧</h4>
+<ul class="footer-links">
+<li><a href="../gradation/"><i class="fas fa-palette"></i> グラデーション</a></li>
+<li><a href="../box-shadow/"><i class="fas fa-cube"></i> ボックスシャドウ</a></li>
+<li><a href="../border-radius/"><i class="fas fa-circle"></i> 角丸</a></li>
+<li><a href="../grid/"><i class="fas fa-th-large"></i> グリッド</a></li>
+<li><a href="../flexbox/"><i class="fas fa-th"></i> フレックスボックス</a></li>
+<li><a href="../text-shadow/"><i class="fas fa-font"></i> テキストシャドウ</a></li>
+<li><a href="../transform/"><i class="fas fa-arrows-alt"></i> トランスフォーム</a></li>
+<li><a href="../margin-padding/"><i class="fas fa-expand-arrows-alt"></i> マージン・パディング</a></li>
+<li><a href="../animation/"><i class="fas fa-play"></i> アニメーション</a></li>
+</ul>
+</div>
+
+<div class="footer-section">
+<h4>情報</h4>
+<ul class="footer-links">
+<li><a href="#" data-modal="about"><i class="fas fa-info-circle"></i> このサイトについて</a></li>
+<li><a href="#" data-modal="contact"><i class="fas fa-envelope"></i> お問い合わせ</a></li>
+<li><a href="#" data-modal="privacy"><i class="fas fa-shield-alt"></i> プライバシーポリシー</a></li>
+<li><a href="#" data-modal="terms"><i class="fas fa-file-contract"></i> 利用規約</a></li>
+<li><a href="https://sanada-portfolio.jp/" target="_blank"><i class="fas fa-briefcase"></i> お仕事はこちら <i class="fas fa-external-link-alt"></i></a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+<div class="footer-social">
+<a href="https://x.com/sanada_ejs" target="_blank" aria-label="X（旧Twitter）"><i class="fa-brands fa-x-twitter"></i></a>
+</div>
+<div class="footer-copyright">
+<p>&copy; 2025 CSSジェネレーター. All rights reserved.</p>
+</div>
+</div>
+</div>
+</footer>
+
+<!-- モーダル -->
+<div id="modal-overlay" class="modal-overlay">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h2 id="modal-title"></h2>
+      <button class="modal-close" onclick="closeModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-content" id="modal-content">
+      <!-- モーダル内容がここに動的に挿入されます -->
+    </div>
+  </div>
+</div>
+
+<script src="/assets/script/script.js" defer></script>
+<script src="animation.js" defer></script>
+</body>
+</html> 

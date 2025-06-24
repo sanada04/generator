@@ -2542,7 +2542,7 @@ body {
 
 .seo-content p {
   margin-bottom: 16px;
-  color: #5a6c7d;
+  color: #222;
   line-height: 1.7;
   font-size: 1rem;
 }
@@ -2554,7 +2554,7 @@ body {
 
 .seo-content li {
   margin-bottom: 10px;
-  color: #5a6c7d;
+  color: #222;
   line-height: 1.6;
 }
 
@@ -2591,7 +2591,7 @@ body {
 }
 
 .tool-details p {
-  color: #5a6c7d;
+  color: #222;
   line-height: 1.6;
 }
 
@@ -2600,35 +2600,35 @@ body {
   .generators-grid {
     padding: 0;
   }
-  
+
   .hero-features {
     gap: 8px;
   }
-  
+
   .feature-badge {
     padding: 6px 12px;
     font-size: 12px;
   }
-  
+
   .seo-content {
     padding: 60px 0 0;
   }
-  
+
   .seo-content h2 {
     font-size: 1.8rem;
     margin-bottom: 30px;
   }
-  
+
   .seo-content h3 {
     font-size: 1.5rem;
     margin: 30px 0 15px;
   }
-  
+
   .seo-content h4 {
     font-size: 1.2rem;
     margin: 25px 0 12px;
   }
-  
+
   .tool-details {
     margin: 30px auto;
     padding: 20px;
@@ -2669,26 +2669,26 @@ body {
   .feature-item {
     padding: 20px;
   }
-  
+
   .seo-content {
     padding: 40px 0 0;
   }
-  
+
   .seo-content h2 {
     font-size: 1.5rem;
     margin-bottom: 25px;
   }
-  
+
   .seo-content h3 {
     font-size: 1.3rem;
     margin: 25px 0 12px;
   }
-  
+
   .seo-content h4 {
     font-size: 1.1rem;
     margin: 20px 0 10px;
   }
-  
+
   .tool-details {
     margin: 25px auto;
     padding: 15px;
@@ -3129,7 +3129,7 @@ body {
     max-width: 95vw;
     margin: 20px;
   }
-  
+
   .promo-close-btn {
     width: 22px;
     height: 22px;
@@ -3144,7 +3144,7 @@ body {
     max-width: 98vw;
     margin: 10px;
   }
-  
+
   .promo-close-btn {
     width: 20px;
     height: 20px;
@@ -3186,7 +3186,7 @@ body {
     padding: 0 10px;
     box-sizing: border-box;
   }
-  
+
   .banner-link__image {
     width: 100% !important;
     max-width: 100% !important;
@@ -3199,7 +3199,7 @@ body {
   .banner {
     padding: 0 5px;
   }
-  
+
   .banner-link__image {
     width: 100% !important;
     max-width: 100% !important;

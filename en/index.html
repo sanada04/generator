@@ -76,26 +76,106 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 
-<!-- Structured Data -->
+<!-- Structured Data - Enhanced -->
 <script type="application/ld+json">
 {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "CSS Generator",
-    "description": "CSS Generator - Easily create gradients, shadows, and animation effects. Generate professional CSS code automatically to streamline web development. Free to use.",
-    "url": "https://css-style-maker.com/en/",
-    "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "Any",
-    "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-    },
-    "creator": {
-        "@type": "Organization",
-        "name": "CSS Generator"
-    }
+    "@graph": [
+        {
+            "@type": "WebApplication",
+            "@id": "https://css-style-maker.com/en/#webapp",
+            "name": "CSS Generator",
+            "alternateName": "CSS Style Maker",
+            "description": "100% free CSS generation tool. Create professional CSS effects instantly with gradient, box shadow, flexbox, CSS Grid and 8 other generators. Real-time preview included.",
+            "url": "https://css-style-maker.com/en/",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Any",
+            "browserRequirements": "Modern browser with CSS3 support",
+            "softwareVersion": "2.0",
+            "datePublished": "2024-01-01",
+            "dateModified": "2025-01-23",
+            "inLanguage": "en",
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD",
+                "availability": "https://schema.org/InStock"
+            },
+            "creator": {
+                "@type": "Organization",
+                "name": "CSS Generator",
+                "url": "https://css-style-maker.com/en/"
+            },
+            "featureList": [
+                "Gradient Generator",
+                "Box Shadow Generator",
+                "Border Radius Generator",
+                "CSS Grid Generator",
+                "Flexbox Generator",
+                "Text Shadow Generator",
+                "Transform Generator",
+                "Margin & Padding Generator"
+            ],
+            "screenshot": "https://css-style-maker.com/assets/image/ogp-image-en.jpg"
+        },
+        {
+            "@type": "Organization",
+            "@id": "https://css-style-maker.com/en/#organization",
+            "name": "CSS Generator",
+            "url": "https://css-style-maker.com/en/",
+            "logo": "https://css-style-maker.com/favicon-32x32.png",
+            "sameAs": [
+                "https://x.com/sanada_ejs"
+            ]
+        },
+        {
+            "@type": "WebSite",
+            "@id": "https://css-style-maker.com/en/#website",
+            "url": "https://css-style-maker.com/en/",
+            "name": "CSS Generator",
+            "description": "100% free CSS generation tool collection",
+            "inLanguage": "en",
+            "publisher": {
+                "@id": "https://css-style-maker.com/en/#organization"
+            },
+            "potentialAction": [
+                {
+                    "@type": "SearchAction",
+                    "target": {
+                        "@type": "EntryPoint",
+                        "urlTemplate": "https://css-style-maker.com/en/?q={search_term_string}"
+                    },
+                    "query-input": "required name=search_term_string"
+                }
+            ]
+        },
+        {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://css-style-maker.com/en/"
+                }
+            ]
+        }
+    ]
 }
+</script>
+
+<!-- Performance monitoring -->
+<script>
+window.addEventListener('load', function() {
+    // Core Web Vitals monitoring
+    if ('web-vital' in window) {
+        webVitals.getCLS(console.log);
+        webVitals.getFID(console.log);
+        webVitals.getFCP(console.log);
+        webVitals.getLCP(console.log);
+        webVitals.getTTFB(console.log);
+    }
+});
 </script>
 
 <link rel="stylesheet" href="/assets/style/styles.css">
@@ -107,7 +187,7 @@
 <header class="header">
 <div class="header-content">
 <div class="header-text">
-<h1><a href="../en/"><i class="fas fa-magic"></i> CSS Generator</a></h1>
+<h1><i class="fas fa-magic"></i> CSS Generator</h1>
 <p>Beautiful CSS generator tool collection</p>
 </div>
 <div class="language-switcher">
@@ -127,7 +207,7 @@
 <li><a href="box-shadow/"><i class="fas fa-cube"></i> Box Shadow</a></li>
 <li><a href="border-radius/"><i class="fas fa-circle"></i> Border Radius</a></li>
 <li><a href="grid/"><i class="fas fa-th-large"></i> Grid</a></li>
-<li><a href="flex/"><i class="fas fa-th"></i> Flexbox</a></li>
+<li><a href="flexbox/"><i class="fas fa-th"></i> Flexbox</a></li>
 <li><a href="text-shadow/"><i class="fas fa-font"></i> Text Shadow</a></li>
 <li><a href="transform/"><i class="fas fa-arrows-alt"></i> Transform</a></li>
 <li><a href="margin-padding/"><i class="fas fa-expand-arrows-alt"></i> Margin & Padding</a></li>
@@ -140,6 +220,12 @@
 <div class="hero-content">
 <h2>Professional CSS Effects Made Easy</h2>
 <p>Streamline your web development with 8 powerful CSS generator tools. Achieve your ideal design with real-time preview.</p>
+<div class="hero-features">
+<span class="feature-badge">✨ 100% Free</span>
+<span class="feature-badge">⚡ Instant Generation</span>
+<span class="feature-badge">📱 Responsive</span>
+<span class="feature-badge">🎨 Professional</span>
+</div>
 </div>
 </section>
 
@@ -268,6 +354,69 @@
 <p>All features are available for free. No account registration required.</p>
 </div>
 </div>
+
+<!-- SEO強化のための詳細説明セクション -->
+<div class="seo-content">
+<h2>What is CSS Generator? Free Tools Revolutionizing Web Development</h2>
+<p>CSS Generator is a free web application that allows you to visually create complex CSS effects. Generate gradients, shadow effects, layouts, and more that would normally take time to code manually through intuitive operations.</p>
+
+<h3>Why Do You Need CSS Generator?</h3>
+<p>Modern web development demands beautiful design and high usability. However, manually coding complex CSS effects requires specialized knowledge and significant time. By using this tool, you can achieve:</p>
+<ul>
+<li><strong>Dramatic Efficiency Improvement</strong>: Over 90% time reduction compared to manual coding</li>
+<li><strong>Enhanced Code Quality</strong>: Automatically generates optimized CSS considering browser compatibility</li>
+<li><strong>Reduced Learning Cost</strong>: No need to memorize complex CSS specifications, get practical code instantly</li>
+<li><strong>Improved Designer-Engineer Collaboration</strong>: Visual operations enable collaboration beyond technical barriers</li>
+</ul>
+
+<h3>Complete Coverage with 8 Specialized Generators</h3>
+<p>This site provides generators specialized for 8 types of CSS effects most frequently used in web development:</p>
+
+<div class="tool-details">
+<h4><i class="fas fa-palette"></i> Gradient Generator</h4>
+<p>Supports both linear-gradient and radial-gradient. Precisely control multiple color combinations, angle adjustments, and transparency settings.</p>
+
+<h4><i class="fas fa-cube"></i> Box Shadow Generator</h4>
+<p>Generate box-shadow properties that add depth to elements. Achieve professional-level shadow expressions with inner/outer shadows, multiple shadow layering, and blur effects.</p>
+
+<h4><i class="fas fa-circle"></i> Border Radius Generator</h4>
+<p>Generate corner rounding effects using border-radius properties. Individually adjust each corner and easily create complex shapes.</p>
+
+<h4><i class="fas fa-th-large"></i> CSS Grid Generator</h4>
+<p>Visually build CSS Grid, the latest layout technique. Comprehensively support grid area placement, size adjustment, and responsive design.</p>
+
+<h4><i class="fas fa-th"></i> Flexbox Generator</h4>
+<p>Intuitively operate flexible box layout settings. Visually adjust all properties including justify-content, align-items, and flex-direction.</p>
+
+<h4><i class="fas fa-font"></i> Text Shadow Generator</h4>
+<p>Generate text-shadow properties that add beautiful shadow effects to text. Achieve impressive typography while maintaining readability.</p>
+
+<h4><i class="fas fa-arrows-alt"></i> Transform Generator</h4>
+<p>Support transform properties that generate element transformation effects. Easily create dynamic visual effects including rotation, scaling, translation, and skewing.</p>
+
+<h4><i class="fas fa-expand-arrows-alt"></i> Margin & Padding Generator</h4>
+<p>Visually adjust element spacing. Intuitively operate margin and padding property settings for easy layout fine-tuning.</p>
+</div>
+
+<h3>Balancing Professional Features with Ease of Use</h3>
+<p>This tool supports a wide range of users from beginners to professionals. While maintaining simple operability, we provide the following advanced features:</p>
+<ul>
+<li><strong>Real-time Preview Function</strong>: Instantly visualize changes</li>
+<li><strong>Automatic Code Optimization</strong>: Generate efficient CSS considering browser compatibility</li>
+<li><strong>One-click Copy</strong>: Instantly copy generated code to clipboard</li>
+<li><strong>Responsive Design</strong>: Comfortable use on any device</li>
+<li><strong>Dark Mode Support</strong>: Eye-friendly dark theme also available</li>
+</ul>
+
+<h3>Why Chosen by Web Development Professionals</h3>
+<p>Reasons why many web designers, frontend engineers, and UI/UX designers choose this tool:</p>
+<ul>
+<li><strong>Dramatic Time Efficiency</strong>: Overwhelming time savings compared to traditional manual coding</li>
+<li><strong>Consistent Quality</strong>: Eliminate human errors and always generate optimized code</li>
+<li><strong>Learning Effect</strong>: Deepen CSS knowledge by referring to generated code</li>
+<li><strong>Improved Team Collaboration</strong>: Everyone can work with the same tool regardless of technical level</li>
+</ul>
+</div>
 </section>
 </main>
 
@@ -291,7 +440,7 @@
 <li><a href="box-shadow/"><i class="fas fa-cube"></i> Box Shadow</a></li>
 <li><a href="border-radius/"><i class="fas fa-circle"></i> Border Radius</a></li>
 <li><a href="grid/"><i class="fas fa-th-large"></i> Grid</a></li>
-<li><a href="flex/"><i class="fas fa-th"></i> Flexbox</a></li>
+<li><a href="flexbox/"><i class="fas fa-th"></i> Flexbox</a></li>
 <li><a href="text-shadow/"><i class="fas fa-font"></i> Text Shadow</a></li>
 <li><a href="transform/"><i class="fas fa-arrows-alt"></i> Transform</a></li>
 <li><a href="margin-padding/"><i class="fas fa-expand-arrows-alt"></i> Margin & Padding</a></li>

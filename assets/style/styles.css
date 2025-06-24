@@ -2520,7 +2520,7 @@ body {
   font-size: 2.2rem;
   color: #2c3e50;
   margin-bottom: 50px;
-  font-weight: 600;
+  font-weight: bold;
   text-align: center;
 }
 
@@ -3081,11 +3081,11 @@ body {
 .promo-link {
   display: block;
   line-height: 0;
-  transition: transform 0.2s ease;
+  transition: opacity 0.2s ease;
 }
 
 .promo-link:hover {
-  transform: scale(1.02);
+  opacity: 0.8;
 }
 
 .promo-link img {

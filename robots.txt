@@ -1,0 +1,45 @@
+User-agent: *
+Allow: /
+
+# XMLサイトマップの場所
+Sitemap: https://css-style-maker.com/sitemap.xml
+
+# クロール頻度の調整
+Crawl-delay: 1
+
+# 特定のボットに対する設定
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 2
+
+# 404ページは除外
+Disallow: /404.html
+Disallow: /en/404.html
+
+# 一時ファイルやキャッシュファイルの除外
+Disallow: /*.tmp$
+Disallow: /*.cache$
+Disallow: /temp/
+Disallow: /cache/
+
+# APIやプライベートファイルの除外
+Disallow: /api/
+Disallow: /private/
+Disallow: /.git/
+Disallow: /.htaccess
+
+# ads.txtファイルは許可
+Allow: /ads.txt
+
+# ファビコンとアセットファイルは許可
+Allow: /assets/
+Allow: /favicon*
+Allow: /apple-touch-icon.png 

@@ -1,0 +1,30 @@
+RewriteEngine on
+
+# 404エラーページの設定（英語版・最優先）
+ErrorDocument 404 /en/404.html
+
+# HTTPS リダイレクト
+RewriteCond %{HTTPS} !on
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# 存在しないファイル・ディレクトリを404ページにリダイレクト
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !^/en/404\.html$
+RewriteCond %{REQUEST_URI} !^/assets/
+RewriteCond %{REQUEST_URI} !^/favicon
+RewriteRule ^(.*)$ /en/404.html [L,R=302]
+
+# キャッシュ設定
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/jpg "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/ico "access plus 1 month"
+    ExpiresByType image/icon "access plus 1 month"
+    ExpiresByType text/html "access plus 1 day"
+</IfModule> 

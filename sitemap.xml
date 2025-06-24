@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    
+    <!-- メインページ（日本語） -->
+    <url>
+        <loc>https://css-style-maker.com/</loc>
+        <lastmod>2025-01-23</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://css-style-maker.com/en/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://css-style-maker.com/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://css-style-maker.com/"/>
+        <image:image>
+            <image:loc>https://css-style-maker.com/assets/image/ogp-image.jpg</image:loc>
+            <image:title>CSSジェネレーター - 無料CSS生成ツール</image:title>
+            <image:caption>プロ仕様のCSS効果を簡単生成できる無料ツール集</image:caption>
+        </image:image>
+    </url>
+    
+    <!-- メインページ（英語） -->
+    <url>
+        <loc>https://css-style-maker.com/en/</loc>
+        <lastmod>2025-01-23</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://css-style-maker.com/en/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://css-style-maker.com/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://css-style-maker.com/"/>
+        <image:image>
+            <image:loc>https://css-style-maker.com/assets/image/ogp-image-en.jpg</image:loc>
+            <image:title>CSS Generator - Free CSS Creation Tools</image:title>
+            <image:caption>Professional CSS effects generator with real-time preview</image:caption>
+        </image:image>
+    </url>
+    
+    <!-- グラデーションジェネレーター（日本語） -->
+    <url>
+        <loc>https://css-style-maker.com/gradation/</loc>
+        <lastmod>2025-01-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://css-style-maker.com/en/gradation/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://css-style-maker.com/gradation/"/>
+    </url>
+    
+    <!-- グラデーションジェネレーター（英語） -->
+    <url>
+        <loc>https://css-style-maker.com/en/gradation/</loc>
+        <lastmod>2025-01-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://css-style-maker.com/en/gradation/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://css-style-maker.com/gradation/"/>
+    </url>
+    
+    <!-- ボックスシャドウジェネレーター（日本語） -->
+    <url>
+        <loc>https://css-style-maker.com/box-shadow/</loc>
+        <lastmod>2025-01-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://css-style-maker.com/en/box-shadow/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://css-style-maker.com/box-shadow/"/>
+    </url>
+    
+    <!-- ボックスシャドウジェネレーター（英語） -->
+    <url>
+        <loc>https://css-style-maker.com/en/box-shadow/</loc>
+        <lastmod>2025-01-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://css-style-maker.com/en/box-shadow/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://css-style-maker.com/box-shadow/"/>
+    </url>
+    
+    <!-- 角丸ジェネレーター（日本語） -->
+    <url>
+        <loc>https://css-style-maker.com/border-radius/</loc>
+        <lastmod>2025-01-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://css-style-maker.com/en/border-radius/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://css-style-maker.com/border-radius/"/>
+    </url>
+    
+    <!-- 角丸ジェネレーター（英語） -->
+    <url>
+        <loc>https://css-style-maker.com/en/border-radius/</loc>
+        <lastmod>2025-01-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://css-style-maker.com/en/border-radius/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://css-style-maker.com/border-radius/"/>
+    </url>
+    
+    <!-- CSS Gridジェネレーター（日本語） -->
+    <url>
+        <loc>https://css-style-maker.com/grid/</loc>
+        <lastmod>2025-01-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://css-style-maker.com/en/grid/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://css-style-maker.com/grid/"/>
+    </url>
+    
+    <!-- CSS Gridジェネレーター（英語） -->
+    <url>
+        <loc>https://css-style-maker.com/en/grid/</loc>
+        <lastmod>2025-01-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://css-style-maker.com/en/grid/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://css-style-maker.com/grid/"/>
+    </url>
+    
+    <!-- Flexboxジェネレーター（日本語） -->
+    <url>
+        <loc>https://css-style-maker.com/flexbox/</loc>
+        <lastmod>2025-01-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://css-style-maker.com/en/flexbox/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://css-style-maker.com/flexbox/"/>
+    </url>
+    
+    <!-- Flexboxジェネレーター（英語） -->
+    <url>
+        <loc>https://css-style-maker.com/en/flexbox/</loc>
+        <lastmod>2025-01-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://css-style-maker.com/en/flexbox/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://css-style-maker.com/flexbox/"/>
+    </url>
+    
+    <!-- テキストシャドウジェネレーター（日本語） -->
+    <url>
+        <loc>https://css-style-maker.com/text-shadow/</loc>
+        <lastmod>2025-01-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://css-style-maker.com/en/text-shadow/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://css-style-maker.com/text-shadow/"/>
+    </url>
+    
+    <!-- テキストシャドウジェネレーター（英語） -->
+    <url>
+        <loc>https://css-style-maker.com/en/text-shadow/</loc>
+        <lastmod>2025-01-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://css-style-maker.com/en/text-shadow/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://css-style-maker.com/text-shadow/"/>
+    </url>
+    
+    <!-- Transformジェネレーター（日本語） -->
+    <url>
+        <loc>https://css-style-maker.com/transform/</loc>
+        <lastmod>2025-01-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://css-style-maker.com/en/transform/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://css-style-maker.com/transform/"/>
+    </url>
+    
+    <!-- Transformジェネレーター（英語） -->
+    <url>
+        <loc>https://css-style-maker.com/en/transform/</loc>
+        <lastmod>2025-01-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://css-style-maker.com/en/transform/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://css-style-maker.com/transform/"/>
+    </url>
+    
+    <!-- マージン・パディングジェネレーター（日本語） -->
+    <url>
+        <loc>https://css-style-maker.com/margin-padding/</loc>
+        <lastmod>2025-01-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://css-style-maker.com/en/margin-padding/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://css-style-maker.com/margin-padding/"/>
+    </url>
+    
+    <!-- マージン・パディングジェネレーター（英語） -->
+    <url>
+        <loc>https://css-style-maker.com/en/margin-padding/</loc>
+        <lastmod>2025-01-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://css-style-maker.com/en/margin-padding/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://css-style-maker.com/margin-padding/"/>
+    </url>
+    
+</urlset> 

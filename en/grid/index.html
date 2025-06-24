@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-V3DKYRP695"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-V3DKYRP695');
+</script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9780704405934373"
+    crossorigin="anonymous"></script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS Grid Generator | CSS Generator - Interactive CSS Grid layout generation tool</title>
+<meta name="description" content="Create CSS Grid layouts easily with visual interface. Drag and drop grid items, resize cells, and generate clean CSS code. Perfect for responsive web design and modern layouts.">
+<meta name="keywords" content="CSS,Grid,generator,CSS Grid,layout,responsive design,web development,grid layout,CSS generation, generator, tool">
+<meta name="author" content="CSS Generator">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<meta name="googlebot" content="index, follow">
+<meta name="bingbot" content="index, follow">
+
+<!-- 地域・言語設定 -->
+<meta name="geo.region" content="US">
+<meta name="geo.country" content="US">
+<meta name="language" content="English">
+<link rel="alternate" hreflang="ja" href="https://css-style-maker.com/grid/">
+<link rel="alternate" hreflang="en" href="https://css-style-maker.com/en/grid/">
+<link rel="alternate" hreflang="x-default" href="https://css-style-maker.com/">
+
+<!-- サイトマップ -->
+<link rel="sitemap" type="application/xml" href="/sitemap.xml">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://css-style-maker.com/en/grid/">
+<meta property="og:title" content="CSS Grid Generator | CSS Generator - Interactive CSS Grid layout generation tool">
+<meta property="og:description" content="Create CSS Grid layouts easily with visual interface. Drag and drop grid items, resize cells, and generate clean CSS code. Perfect for responsive web design and modern layouts.">
+<meta property="og:image" content="https://css-style-maker.com/assets/image/ogp-image-en.jpg">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://css-style-maker.com/en/grid/">
+<meta property="twitter:title" content="CSS Grid Generator | CSS Generator - Interactive CSS Grid layout generation tool">
+<meta property="twitter:description" content="Create CSS Grid layouts easily with visual interface. Drag and drop grid items, resize cells, and generate clean CSS code. Perfect for responsive web design and modern layouts.">
+<meta property="twitter:image" content="https://css-style-maker.com/assets/image/ogp-image-en.jpg">
+
+<!-- Canonical URL -->
+<link rel="canonical" href="https://css-style-maker.com/en/grid/">
+
+<!-- Favicon -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+<link rel="stylesheet" href="/assets/style/styles.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container">
+<header class="header">
+<div class="header-content">
+<div class="header-text">
+<h1><a href="../"><i class="fas fa-magic"></i> CSS Generator</a></h1>
+<p>Create beautiful CSS easily with our collection of tools</p>
+</div>
+<div class="language-switcher">
+<a href="../../grid/" class="lang-link">
+<i class="fas fa-globe"></i> 日本語
+</a>
+</div>
+</div>
+<nav class="header-nav">
+<div class="nav-button" onclick="toggleHeaderNav()">
+<i class="fas fa-bars nav-icon"></i>
+<span class="nav-text">Menu</span>
+<i class="fas fa-chevron-down nav-arrow"></i>
+</div>
+<ul class="nav-menu">
+<li><a href="../gradation/"><i class="fas fa-palette"></i> Gradient</a></li>
+<li><a href="../box-shadow/"><i class="fas fa-cube"></i> Box Shadow</a></li>
+<li><a href="../border-radius/"><i class="fas fa-circle"></i> Border Radius</a></li>
+<li><a href="../grid/" class="active"><i class="fas fa-th-large"></i> Grid</a></li>
+<li><a href="../flexbox/"><i class="fas fa-th"></i> Flexbox</a></li>
+<li><a href="../text-shadow/"><i class="fas fa-font"></i> Text Shadow</a></li>
+<li><a href="../transform/"><i class="fas fa-arrows-alt"></i> Transform</a></li>
+<li><a href="../margin-padding/"><i class="fas fa-expand-arrows-alt"></i> Margin & Padding</a></li>
+</ul>
+</nav>
+</header>
+
+<main class="main-content">
+<div class="generator-container grid-generator">
+<h2 class="mobile-title">CSS Grid Generator</h2>
+<div class="controls">
+<h2>CSS Grid Generator</h2>
+<div class="control-group">
+<label for="grid-columns">Columns:</label>
+<input type="range" id="grid-columns" min="1" max="8" value="3" aria-label="Number of columns">
+<span id="grid-columns-value">3</span>
+</div>
+<div class="control-group">
+<label for="grid-rows">Rows:</label>
+<input type="range" id="grid-rows" min="1" max="6" value="3" aria-label="Number of rows">
+<span id="grid-rows-value">3</span>
+</div>
+<div class="control-group">
+<label for="grid-gap">Gap:</label>
+<input type="range" id="grid-gap" min="0" max="50" value="10" aria-label="Grid gap">
+<span id="grid-gap-value">10px</span>
+</div>
+</div>
+<div class="preview">
+<h3>Preview</h3>
+<div class="grid-usage-info">
+<p><i class="fas fa-info-circle"></i> Usage:</p>
+<ul class="usage-desktop">
+<li><strong>Click empty cell</strong> → Add item</li>
+<li><strong>Drag item</strong> → Move</li>
+<li><strong>Bottom-right handle</strong> → Resize</li>
+<li><strong>Right-click</strong> → Delete item</li>
+<li><strong>Delete/Backspace</strong> → Delete selected item</li>
+<li><strong>Escape</strong> → Deselect</li>
+</ul>
+<ul class="usage-mobile">
+<li><strong>Tap empty cell</strong> → Add item</li>
+<li><strong>Drag item</strong> → Move</li>
+<li><strong>Bottom-right handle</strong> → Resize</li>
+<li><strong>Tap × button</strong> → Delete item</li>
+</ul>
+</div>
+<div class="grid-container" id="grid-preview">
+<!-- Grid items will be dynamically generated here -->
+</div>
+</div>
+<div class="output">
+<h3>Generated CSS:</h3>
+<div class="css-output-tabs">
+<button type="button" class="css-tab active" data-target="grid-html-output">HTML</button>
+<button type="button" class="css-tab" data-target="grid-css-output">CSS</button>
+</div>
+<textarea id="grid-html-output" readonly aria-label="Generated HTML"></textarea>
+<textarea id="grid-css-output" readonly style="display:none;" aria-label="Generated CSS"></textarea>
+<div class="copy-buttons">
+<button class="copy-btn" onclick="copyToClipboard('grid-html-output')">
+<i class="fas fa-copy"></i> Copy HTML
+</button>
+<button class="copy-btn" onclick="copyToClipboard('grid-css-output')">
+<i class="fas fa-copy"></i> Copy CSS
+</button>
+</div>
+</div>
+</div>
+</main>
+
+<div class="banner">
+<a class="banner-link" href="https://px.a8.net/svt/ejp?a8mat=457Q3P+2VLGT6+4NIK+639IP" rel="nofollow" target="_blank">
+<img class="banner-link__image" border="0" width="728" height="90" alt="" src="https://www21.a8.net/svt/bgt?aid=250623205174&wid=002&eno=01&mid=s00000021710001023000&mc=1"></a>
+<img border="0" width="1" height="1" src="https://www10.a8.net/0.gif?a8mat=457Q3P+2VLGT6+4NIK+639IP" alt="">
+</div>
+
+<footer class="footer">
+<div class="footer-container">
+<div class="footer-content">
+<div class="footer-section">
+<h3><i class="fas fa-magic"></i> CSS Generator</h3>
+<p>A collection of tools to create beautiful CSS easily. Streamline web development and expand design possibilities.</p>
+</div>
+<div class="footer-section">
+<h4>Tools</h4>
+<ul class="footer-links">
+<li><a href="../gradation/"><i class="fas fa-palette"></i> Gradient</a></li>
+<li><a href="../box-shadow/"><i class="fas fa-cube"></i> Box Shadow</a></li>
+<li><a href="../border-radius/"><i class="fas fa-circle"></i> Border Radius</a></li>
+<li><a href="../grid/"><i class="fas fa-th-large"></i> Grid</a></li>
+<li><a href="../flexbox/"><i class="fas fa-th"></i> Flexbox</a></li>
+<li><a href="../text-shadow/"><i class="fas fa-font"></i> Text Shadow</a></li>
+<li><a href="../transform/"><i class="fas fa-arrows-alt"></i> Transform</a></li>
+<li><a href="../margin-padding/"><i class="fas fa-expand-arrows-alt"></i> Margin & Padding</a></li>
+</ul>
+</div>
+
+<div class="footer-section">
+<h4>Information</h4>
+<ul class="footer-links">
+<li><a href="#" data-modal="about"><i class="fas fa-info-circle"></i> About This Site</a></li>
+<li><a href="#" data-modal="contact"><i class="fas fa-envelope"></i> Contact</a></li>
+<li><a href="#" data-modal="privacy"><i class="fas fa-shield-alt"></i> Privacy Policy</a></li>
+<li><a href="#" data-modal="terms"><i class="fas fa-file-contract"></i> Terms of Use</a></li>
+<li><a href="https://sanada-portfolio.jp/" target="_blank"><i class="fas fa-briefcase"></i> Work Inquiries <i class="fas fa-external-link-alt"></i></a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+<div class="footer-social">
+<a href="https://x.com/sanada_ejs" target="_blank" aria-label="X (formerly Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+</div>
+<div class="footer-copyright">
+<p>&copy; 2025 CSS Generator. All rights reserved.</p>
+</div>
+</div>
+</div>
+</footer>
+
+<!-- Modal -->
+<div id="modal-overlay" class="modal-overlay">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h2 id="modal-title"></h2>
+      <button class="modal-close" onclick="closeModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-content" id="modal-content">
+      <!-- Modal content will be dynamically inserted here -->
+    </div>
+  </div>
+</div>
+
+<script src="/assets/script/script.js" defer></script>
+<script>
+// Initialize CSS Grid generator when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    initializeCSSGridGenerator();
+});
+</script>
+</body>
+</html>

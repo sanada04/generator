@@ -1124,6 +1124,10 @@ body {
     transform: translateY(-50%);
 }
 
+.footer {
+  position: relative;
+}
+
 .footer-container {
   margin-top: 32px;
   padding: 40px 0 20px;
@@ -1133,6 +1137,7 @@ body {
   margin-left: 0;
   margin-right: 0;
   border-radius: 8px 8px 0 0;
+  position: relative;
 }
 
 .footer-content {
@@ -3388,5 +3393,79 @@ body {
   .animation-target {
     padding: 12px 20px;
     font-size: 14px;
+  }
+}
+
+/* ページトップボタン */
+.page-top-btn {
+  position: fixed;
+  bottom: 30px;
+  right: calc(50% - 700px + 30px); /* containerの右端から30px内側 */
+  width: 60px;
+  height: 60px;
+  background: #fff;
+  border: 2px solid #764ba2;
+  border-radius: 50%;
+  color: #667eea;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 1000;
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+/* PC画面が小さい場合（1460px以下）は通常の右端配置に戻す */
+@media (max-width: 1460px) {
+  .page-top-btn {
+    right: 30px;
+  }
+}
+
+.page-top-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
+}
+
+.page-top-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+}
+
+.page-top-btn.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.page-top-btn.footer-fixed {
+  position: absolute;
+  top: 0;
+}
+
+.page-top-btn i {
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .page-top-btn {
+    width: 50px;
+    height: 50px;
+    bottom: 20px;
+    right: 20px;
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-top-btn {
+    width: 50px;
+    height: 50px;
+    bottom: 15px;
+    right: 24px;
+    font-size: 16px;
   }
 }

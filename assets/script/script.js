@@ -9,6 +9,9 @@ document.addEventListener('DOMContentLoaded', function() {
     try {
         console.log('DOMContentLoaded: 初期化開始');
         
+        // ナビゲーションのアクティブ状態を設定
+        setActiveNavigation();
+        
         // ページタイプを判定
         const isMainPage = !document.querySelector('.tab-button');
         console.log('ページタイプ:', isMainPage ? 'メインページ' : 'ジェネレーターページ');
@@ -28,6 +31,51 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('初期化エラー:', error);
     }
 });
+
+// ナビゲーションのアクティブ状態を設定
+function setActiveNavigation() {
+    try {
+        // 現在のページパスを取得
+        const currentPath = window.location.pathname;
+        
+        // パスからページタイプを判定
+        let currentPage = '';
+        if (currentPath.includes('/gradation/')) {
+            currentPage = 'gradation';
+        } else if (currentPath.includes('/box-shadow/')) {
+            currentPage = 'box-shadow';
+        } else if (currentPath.includes('/border-radius/')) {
+            currentPage = 'border-radius';
+        } else if (currentPath.includes('/grid/')) {
+            currentPage = 'grid';
+        } else if (currentPath.includes('/flexbox/')) {
+            currentPage = 'flexbox';
+        } else if (currentPath.includes('/text-shadow/')) {
+            currentPage = 'text-shadow';
+        } else if (currentPath.includes('/transform/')) {
+            currentPage = 'transform';
+        } else if (currentPath.includes('/margin-padding/')) {
+            currentPage = 'margin-padding';
+        } else if (currentPath.includes('/animation/')) {
+            currentPage = 'animation';
+        }
+        
+        // アクティブクラスを設定
+        if (currentPage) {
+            const navLinks = document.querySelectorAll('.nav-menu a[data-page]');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-page') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        console.log('アクティブナビゲーション設定完了:', currentPage);
+    } catch (error) {
+        console.error('アクティブナビゲーション設定エラー:', error);
+    }
+}
 
 // タブ切り替え機能
 function initializeTabs() {

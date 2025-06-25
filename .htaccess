@@ -140,3 +140,7 @@ Options -Indexes
 
 # ServerSignature無効化
 ServerSignature Off
+
+Options +Includes
+AddType text/html .html
+AddOutputFilter INCLUDES .html

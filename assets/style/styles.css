@@ -3458,6 +3458,10 @@ body {
     right: 20px;
     font-size: 18px;
   }
+
+  .page-top-btn.footer-fixed {
+    right: 12px;
+  }
 }
 
 @media (max-width: 480px) {

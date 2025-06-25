@@ -2183,8 +2183,6 @@ function closeAffiliateModal() {
     if (modal) {
         modal.classList.remove('show');
 
-
-
         setTimeout(() => {
             modal.remove();
             console.log('アフィリエイトモーダル削除完了');
@@ -2193,3 +2191,87 @@ function closeAffiliateModal() {
         console.log('閉じるモーダルが見つかりません');
     }
 }
+
+// ページトップボタンの制御
+function initializePageTopButton() {
+    // ページトップボタンが存在しない場合は何もしない
+    const pageTopBtn = document.getElementById('page-top-btn');
+    if (!pageTopBtn) return;
+
+    const footer = document.querySelector('.footer');
+    let isFooterFixed = false;
+
+    // スクロールイベントでボタンの表示/非表示とフッター固定を制御
+    function handleScroll() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+        
+        // 200px以上スクロールした時に表示
+        if (scrollTop > 200) {
+            pageTopBtn.classList.add('show');
+        } else {
+            pageTopBtn.classList.remove('show');
+        }
+
+        // フッターとの重なりチェック
+        if (footer) {
+            const footerRect = footer.getBoundingClientRect();
+            
+            // フッターが画面に入ったかチェック
+            if (footerRect.top < windowHeight && footerRect.bottom > 0) {
+                if (!isFooterFixed) {
+                    // フッター内に絶対配置で固定
+                    pageTopBtn.classList.add('footer-fixed');
+                    footer.appendChild(pageTopBtn);
+                    isFooterFixed = true;
+                    
+                    // CSSで設定されているposition: absoluteスタイルを使用
+                    pageTopBtn.style.position = '';
+                    pageTopBtn.style.bottom = '';
+                    pageTopBtn.style.right = '';
+                    pageTopBtn.style.top = '';
+                }
+            } else {
+                if (isFooterFixed) {
+                    // フッターから取り出してbodyに戻す
+                    pageTopBtn.classList.remove('footer-fixed');
+                    document.body.appendChild(pageTopBtn);
+                    isFooterFixed = false;
+                    
+                    // 元のfixed位置に戻す
+                    pageTopBtn.style.position = '';
+                    pageTopBtn.style.bottom = '';
+                    pageTopBtn.style.right = '';
+                    pageTopBtn.style.top = '';
+                }
+            }
+        }
+    }
+
+    // スクロールイベントリスナーを追加（パフォーマンス向上のためthrottle処理）
+    let scrollTimeout;
+    window.addEventListener('scroll', function() {
+        if (scrollTimeout) {
+            clearTimeout(scrollTimeout);
+        }
+        scrollTimeout = setTimeout(handleScroll, 10);
+    });
+
+    // ボタンクリック時のスムーズスクロール
+    pageTopBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+
+    // 初期状態の設定
+    handleScroll();
+}
+
+// DOMContentLoadedイベントでページトップボタンを初期化
+document.addEventListener('DOMContentLoaded', function() {
+    initializePageTopButton();
+});

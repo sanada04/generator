@@ -133,19 +133,8 @@
 
 <!--#include virtual="../includes/footer.html" -->
 
-<!-- モーダル -->
-<div id="modal-overlay" class="modal-overlay">
-  <div class="modal-container">
-    <div class="modal-header">
-      <h2 id="modal-title"></h2>
-      <button class="modal-close" onclick="closeModal()">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-    <div class="modal-content" id="modal-content">
-      <!-- モーダル内容がここに動的に挿入されます -->
-    </div>
-  </div>
+<!--#include virtual="../includes/modal.html" -->
+
 </div>
 
 <script src="/assets/script/script.js" defer></script>
@@ -155,10 +144,6 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeCSSGridGenerator();
 });
 </script>
-<!-- ページトップボタン -->
-<button id="page-top-btn" class="page-top-btn" aria-label="ページトップに戻る">
-  <i class="fas fa-chevron-up"></i>
-</button>
 
 </body>
 </html>

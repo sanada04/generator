@@ -2389,7 +2389,7 @@ body {
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   padding: 80px 20px;
   text-align: center;
-  margin-bottom: 60px;
+  margin-bottom: 32px;
 }
 
 .hero-content h2 {
@@ -3473,3 +3473,30 @@ body {
     font-size: 16px;
   }
 }
+
+.adsbygoogle {
+  margin-bottom: 32px;
+}
+
+.adsbygoogle div {
+  display: block !important;
+  margin: 0 auto !important;
+}
+
+@media (max-width: 768px) {
+  .adsbygoogle {
+    margin-left: 0 !important;
+    width: auto !important;
+    height: auto !important;
+  }
+
+  .adsbygoogle div {
+    width: auto !important;
+  }
+
+  .adsbygoogle div iframe {
+    max-width: 100% !important;
+  }
+}
+
+

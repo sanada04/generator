@@ -24,8 +24,6 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('ジェネレーター初期化完了');
         }
         
-        console.log('DOMContentLoaded: アフィリエイトモーダル初期化開始');
-        initializeAffiliateModal();
         console.log('DOMContentLoaded: 初期化完了');
     } catch (error) {
         console.error('初期化エラー:', error);
@@ -2114,131 +2112,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// アフィリエイト広告設定
-const AFFILIATE_CONFIG = {
-    // 表示確率（1.0 = 100%の確率で表示）
-    showProbability: 0.3,
 
-    // 表示遅延時間（ミリ秒）
-    showDelay: 3000,
-
-    // アフィリエイトリンク情報
-    affiliateData: {
-        href: "https://px.a8.net/svt/ejp?a8mat=457Q3O+5SZ6VU+348+6KU8H",
-        imgSrc: "https://www25.a8.net/svt/bgt?aid=250623204351&wid=002&eno=01&mid=s00000000404001105000&mc=1",
-        trackingPixel: "https://www17.a8.net/0.gif?a8mat=457Q3O+5SZ6VU+348+6KU8H",
-        width: 336,
-        height: 280,
-        alt: "アフィリエイト広告"
-    }
-};
-
-// アフィリエイトモーダル初期化
-function initializeAffiliateModal() {
-    console.log('initializeAffiliateModal: 関数開始');
-    console.log('AFFILIATE_CONFIG:', AFFILIATE_CONFIG);
-
-    const randomValue = Math.random();
-    console.log('乱数値:', randomValue, '表示確率:', AFFILIATE_CONFIG.showProbability);
-
-    // 確率判定
-    if (randomValue > AFFILIATE_CONFIG.showProbability) {
-        console.log('アフィリエイト広告: 確率判定で非表示');
-        return; // 確率で表示しない
-    }
-
-    console.log('アフィリエイト広告: 表示予定 - ' + AFFILIATE_CONFIG.showDelay + 'ms後に表示');
-
-    // 遅延後に表示
-    setTimeout(() => {
-        console.log('アフィリエイト広告: 表示実行');
-        showAffiliateModal();
-    }, AFFILIATE_CONFIG.showDelay);
-}
-
-// アフィリエイトモーダル表示
-function showAffiliateModal() {
-    console.log('showAffiliateModal: 関数開始');
-
-    // 既存のモーダルが表示されている場合は表示しない
-    if (document.getElementById('promo-modal')) {
-        console.log('既存のプロモーションモーダルが存在するため表示中止');
-        return;
-    }
-
-    console.log('アフィリエイトモーダル作成中...');
-    const modal = createAffiliateModal();
-    document.body.appendChild(modal);
-    console.log('アフィリエイトモーダルをDOMに追加');
-
-
-
-    // アニメーション用の少し遅延
-    setTimeout(() => {
-        modal.classList.add('show');
-        console.log('アフィリエイトモーダル表示完了');
-    }, 100);
-}
-
-// アフィリエイトモーダル作成
-function createAffiliateModal() {
-    console.log('createAffiliateModal: モーダル作成開始');
-
-    const modal = document.createElement('div');
-    modal.id = 'promo-modal';
-    modal.className = 'promo-modal-overlay';
-
-    const { affiliateData } = AFFILIATE_CONFIG;
-
-    modal.innerHTML = `
-        <div class="promo-modal-container">
-            <div class="promo-modal-content">
-                <a href="${affiliateData.href}" rel="nofollow" target="_blank" class="promo-link">
-                    <img border="0" width="${affiliateData.width}" height="${affiliateData.height}" alt="${affiliateData.alt}" src="${affiliateData.imgSrc}">
-                </a>
-                <img border="0" width="1" height="1" src="${affiliateData.trackingPixel}" alt="" style="display: none;">
-            </div>
-            <button class="promo-close-btn" onclick="closeAffiliateModal()">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-    `;
-
-    // 背景クリックで閉じる機能
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            closeAffiliateModal();
-        }
-    });
-
-    // ESCキーで閉じる機能
-    const handleEscKey = function(e) {
-        if (e.key === 'Escape') {
-            closeAffiliateModal();
-            document.removeEventListener('keydown', handleEscKey);
-        }
-    };
-    document.addEventListener('keydown', handleEscKey);
-
-    console.log('createAffiliateModal: モーダル作成完了');
-    return modal;
-}
-
-// アフィリエイトモーダル閉じる
-function closeAffiliateModal() {
-    console.log('closeAffiliateModal: モーダルを閉じます');
-    const modal = document.getElementById('promo-modal');
-    if (modal) {
-        modal.classList.remove('show');
-
-        setTimeout(() => {
-            modal.remove();
-            console.log('アフィリエイトモーダル削除完了');
-        }, 300);
-    } else {
-        console.log('閉じるモーダルが見つかりません');
-    }
-}
 
 // ページトップボタンの制御
 function initializePageTopButton() {

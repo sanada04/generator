@@ -108,7 +108,7 @@ function initializeTabs() {
 
 // 各ジェネレーターの初期化
 function initializeGenerators() {
-    initializeGradientGenerator();
+    initializeAdvancedGradientGenerator();
     initializeBoxShadowGenerator();
     initializeBorderRadiusGenerator();
     initializeFlexboxGenerator();
@@ -118,52 +118,835 @@ function initializeGenerators() {
     initializeMarginPaddingGenerator();
 }
 
-// グラデーションジェネレーター
-function initializeGradientGenerator() {
-    const type = document.getElementById('gradient-type');
-    const angle = document.getElementById('gradient-angle');
-    const color1 = document.getElementById('gradient-color1');
-    const color2 = document.getElementById('gradient-color2');
-    const width = document.getElementById('gradient-width');
-    const height = document.getElementById('gradient-height');
-    const preview = document.getElementById('gradient-preview');
-    const output = document.getElementById('gradient-output');
+// 高度なグラデーションジェネレーター（cssgradient.io風）
+let advancedGradientData = {
+    type: 'linear',
+    angle: 90,
+    colorFormat: 'hex',
+    ieSupport: true,
+    colorStops: [
+        { id: 1, color: { hex: '#ff6b6b', rgb: [255, 107, 107], rgba: [255, 107, 107, 1] }, position: 0 },
+        { id: 2, color: { hex: '#4ecdc4', rgb: [78, 205, 196], rgba: [78, 205, 196, 1] }, position: 100 }
+    ],
+    activeStopId: 1
+};
 
-    // 値表示用の要素
-    const widthValue = document.getElementById('gradient-width-value');
-    const heightValue = document.getElementById('gradient-height-value');
+let nextStopId = 3;
 
-    function updateGradient() {
-        const gradientType = type.value;
-        const gradientAngle = angle.value;
-        const gradientColor1 = color1.value;
-        const gradientColor2 = color2.value;
-        const gradientWidth = width.value;
-        const gradientHeight = height.value;
+function initializeAdvancedGradientGenerator() {
+    setupEventListeners();
+    renderColorStops();
+    renderGradientBar();
+    renderPresets();
+    updateGradientPreview();
+    updateCSSOutput();
+}
 
-        // サイズ値を表示
-        widthValue.textContent = `${gradientWidth}px`;
-        heightValue.textContent = `${gradientHeight}px`;
-
-        let cssValue;
-        if (gradientType === 'linear') {
-            cssValue = `linear-gradient(${gradientAngle}deg, ${gradientColor1}, ${gradientColor2})`;
-        } else {
-            cssValue = `radial-gradient(circle, ${gradientColor1}, ${gradientColor2})`;
-        }
-
-        preview.style.background = cssValue;
-        preview.style.width = `${gradientWidth}px`;
-        preview.style.height = `${gradientHeight}px`;
-        output.value = `background: ${cssValue};`;
-    }
-
-    [type, angle, color1, color2, width, height].forEach(element => {
-        element.addEventListener('input', updateGradient);
+// イベントリスナーの設定
+function setupEventListeners() {
+    // グラデーションタイプ選択
+    document.querySelectorAll('.type-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            advancedGradientData.type = e.target.dataset.type;
+            updateGradientPreview();
+            updateCSSOutput();
+        });
     });
 
-    updateGradient();
+    // 角度調整
+    const angleSlider = document.getElementById('angle-slider');
+    const angleInput = document.getElementById('angle-input');
+    
+    angleSlider.addEventListener('input', (e) => {
+        advancedGradientData.angle = parseInt(e.target.value);
+        angleInput.value = e.target.value;
+        updateGradientPreview();
+        updateCSSOutput();
+    });
+    
+    angleInput.addEventListener('input', (e) => {
+        advancedGradientData.angle = parseInt(e.target.value);
+        angleSlider.value = e.target.value;
+        updateGradientPreview();
+        updateCSSOutput();
+    });
+
+    // 色フォーマット選択
+    document.querySelectorAll('.format-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            document.querySelectorAll('.format-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            advancedGradientData.colorFormat = e.target.dataset.format;
+            renderColorStops();
+            updateCSSOutput();
+        });
+    });
+
+    // IE互換性
+    document.getElementById('ie-support').addEventListener('change', (e) => {
+        advancedGradientData.ieSupport = e.target.checked;
+        updateCSSOutput();
+    });
+
+    // グラデーションバークリック（新しい色ストップ追加）
+    document.getElementById('gradient-bar').addEventListener('click', (e) => {
+        // マーカーがクリックされた場合は処理しない
+        if (e.target.classList.contains('color-stop-marker')) {
+            return;
+        }
+        
+        const rect = e.target.getBoundingClientRect();
+        const position = Math.round(((e.clientX - rect.left) / rect.width) * 100);
+        addNewColorStopAtPosition(position);
+    });
+
+    // カラーピッカー
+    document.getElementById('hidden-color-picker').addEventListener('change', (e) => {
+        updateActiveStopColor(e.target.value);
+    });
 }
+
+// 色ストップのレンダリング
+function renderColorStops() {
+    const container = document.getElementById('color-stops-list');
+    container.innerHTML = '';
+
+    advancedGradientData.colorStops.forEach(stop => {
+        const stopElement = document.createElement('div');
+        stopElement.className = `color-stop-item ${stop.id === advancedGradientData.activeStopId ? 'active' : ''}`;
+        
+        // 現在の色形式に応じたプレースホルダー
+        let placeholder = '';
+        switch(advancedGradientData.colorFormat) {
+            case 'hex':
+                placeholder = '#FF0000';
+                break;
+            case 'rgb':
+                placeholder = 'rgb(255, 0, 0)';
+                break;
+            case 'rgba':
+                placeholder = 'rgba(255, 0, 0, 1)';
+                break;
+            default:
+                placeholder = '#FF0000 or red';
+        }
+        
+        stopElement.innerHTML = `
+            <div class="color-preview" style="background-color: ${stop.color.hex}" 
+                 onclick="openColorPicker(${stop.id})" title="クリックして色を選択"></div>
+            <input type="text" class="color-value-input" value="${getColorValue(stop.color)}" 
+                   onchange="updateColorFromText(${stop.id}, this.value)"
+                   onblur="updateColorFromText(${stop.id}, this.value)"
+                   oninput="validateColorInput(this, ${stop.id})"
+                   onclick="this.select()"
+                   placeholder="${placeholder}">
+            <input type="number" class="position-input" value="${stop.position}" 
+                   min="0" max="100" onchange="updateStopPosition(${stop.id}, this.value)">
+            <span>%</span>
+            ${advancedGradientData.colorStops.length > 2 ? 
+                `<button class="remove-stop-btn" onclick="removeColorStop(${stop.id})">
+                    <i class="fas fa-trash"></i>
+                </button>` : ''
+            }
+        `;
+        container.appendChild(stopElement);
+    });
+}
+
+// グラデーションバーのレンダリング
+function renderGradientBar() {
+    const gradientBar = document.getElementById('gradient-bar');
+    
+    // 既存のマーカーを削除
+    gradientBar.querySelectorAll('.color-stop-marker').forEach(marker => marker.remove());
+    
+    // 新しいマーカーを追加
+    advancedGradientData.colorStops.forEach(stop => {
+        const marker = document.createElement('div');
+        marker.className = `color-stop-marker ${stop.id === advancedGradientData.activeStopId ? 'active' : ''}`;
+        marker.style.left = `${stop.position}%`;
+        marker.style.backgroundColor = stop.color.hex;
+        marker.dataset.stopId = stop.id;
+        
+        // クリックイベント
+        marker.onclick = (e) => {
+            e.stopPropagation();
+            selectColorStop(stop.id);
+        };
+        
+        // ドラッグイベント
+        marker.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            startDragColorStop(e, stop.id);
+        });
+        
+        gradientBar.appendChild(marker);
+    });
+}
+
+// プリセットのレンダリング
+function renderPresets() {
+    const presets = [
+        { name: '夕焼け', gradient: 'linear-gradient(45deg, #ff7b7b 0%, #ff9d4d 30%, #ffcd3c 70%, #fef08a 100%)', 
+          stops: [
+              { hex: '#ff7b7b', rgb: [255, 123, 123], rgba: [255, 123, 123, 1], position: 0 },
+              { hex: '#ff9d4d', rgb: [255, 157, 77], rgba: [255, 157, 77, 1], position: 30 },
+              { hex: '#ffcd3c', rgb: [255, 205, 60], rgba: [255, 205, 60, 1], position: 70 },
+              { hex: '#fef08a', rgb: [254, 240, 138], rgba: [254, 240, 138, 1], position: 100 }
+          ]
+        },
+        { name: '海', gradient: 'linear-gradient(45deg, #667eea 0%, #764ba2 100%)',
+          stops: [
+              { hex: '#667eea', rgb: [102, 126, 234], rgba: [102, 126, 234, 1], position: 0 },
+              { hex: '#764ba2', rgb: [118, 75, 162], rgba: [118, 75, 162, 1], position: 100 }
+          ]
+        },
+        { name: '森', gradient: 'linear-gradient(45deg, #134e5e 0%, #71b280 100%)',
+          stops: [
+              { hex: '#134e5e', rgb: [19, 78, 94], rgba: [19, 78, 94, 1], position: 0 },
+              { hex: '#71b280', rgb: [113, 178, 128], rgba: [113, 178, 128, 1], position: 100 }
+          ]
+        },
+        { name: '紫', gradient: 'linear-gradient(45deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
+          stops: [
+              { hex: '#667eea', rgb: [102, 126, 234], rgba: [102, 126, 234, 1], position: 0 },
+              { hex: '#764ba2', rgb: [118, 75, 162], rgba: [118, 75, 162, 1], position: 50 },
+              { hex: '#f093fb', rgb: [240, 147, 251], rgba: [240, 147, 251, 1], position: 100 }
+          ]
+        },
+        { name: '炎', gradient: 'linear-gradient(45deg, #ff416c 0%, #ff4b2b 100%)',
+          stops: [
+              { hex: '#ff416c', rgb: [255, 65, 108], rgba: [255, 65, 108, 1], position: 0 },
+              { hex: '#ff4b2b', rgb: [255, 75, 43], rgba: [255, 75, 43, 1], position: 100 }
+          ]
+        },
+        { name: '虹', gradient: 'linear-gradient(45deg, #ff0000 0%, #ff8000 16%, #ffff00 33%, #80ff00 50%, #00ff80 66%, #0080ff 83%, #8000ff 100%)',
+          stops: [
+              { hex: '#ff0000', rgb: [255, 0, 0], rgba: [255, 0, 0, 1], position: 0 },
+              { hex: '#ff8000', rgb: [255, 128, 0], rgba: [255, 128, 0, 1], position: 16 },
+              { hex: '#ffff00', rgb: [255, 255, 0], rgba: [255, 255, 0, 1], position: 33 },
+              { hex: '#80ff00', rgb: [128, 255, 0], rgba: [128, 255, 0, 1], position: 50 },
+              { hex: '#00ff80', rgb: [0, 255, 128], rgba: [0, 255, 128, 1], position: 66 },
+              { hex: '#0080ff', rgb: [0, 128, 255], rgba: [0, 128, 255, 1], position: 83 },
+              { hex: '#8000ff', rgb: [128, 0, 255], rgba: [128, 0, 255, 1], position: 100 }
+          ]
+        }
+    ];
+
+    const container = document.getElementById('preset-grid');
+    container.innerHTML = '';
+
+    presets.forEach((preset, index) => {
+        const presetElement = document.createElement('div');
+        presetElement.className = 'preset-item';
+        presetElement.style.background = preset.gradient;
+        presetElement.innerHTML = `<div class="preset-label">${preset.name}</div>`;
+        presetElement.onclick = () => applyPreset(preset.stops);
+        container.appendChild(presetElement);
+    });
+}
+
+// グラデーションプレビューの更新
+function updateGradientPreview() {
+    const preview = document.getElementById('gradient-preview');
+    const sortedStops = [...advancedGradientData.colorStops].sort((a, b) => a.position - b.position);
+    
+    const colorStopsStr = sortedStops.map(stop => 
+        `${stop.color.hex} ${stop.position}%`
+    ).join(', ');
+
+    let gradient;
+    if (advancedGradientData.type === 'linear') {
+        gradient = `linear-gradient(${advancedGradientData.angle}deg, ${colorStopsStr})`;
+    } else {
+        gradient = `radial-gradient(circle, ${colorStopsStr})`;
+    }
+
+    preview.style.background = gradient;
+    renderGradientBar();
+}
+
+// CSS出力の更新
+function updateCSSOutput() {
+    const output = document.getElementById('css-output');
+    const sortedStops = [...advancedGradientData.colorStops].sort((a, b) => a.position - b.position);
+    
+    const colorStopsStr = sortedStops.map(stop => 
+        `${getColorValue(stop.color)} ${stop.position}%`
+    ).join(', ');
+
+    let css = '';
+    
+    if (advancedGradientData.ieSupport) {
+        // IE用フォールバック
+        css += `background: ${sortedStops[0].color.hex};\n`;
+    }
+    
+    if (advancedGradientData.type === 'linear') {
+        css += `background: linear-gradient(${advancedGradientData.angle}deg, ${colorStopsStr});`;
+    } else {
+        css += `background: radial-gradient(circle, ${colorStopsStr});`;
+    }
+
+    output.value = css;
+}
+
+// ユーティリティ関数
+function getColorValue(color) {
+    switch (advancedGradientData.colorFormat) {
+        case 'hex':
+            return color.hex;
+        case 'rgb':
+            return `rgb(${color.rgb.join(', ')})`;
+        case 'rgba':
+            return `rgba(${color.rgba.join(', ')})`;
+        default:
+            return color.hex;
+    }
+}
+
+function hexToRgb(hex) {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? [
+        parseInt(result[1], 16),
+        parseInt(result[2], 16),
+        parseInt(result[3], 16)
+    ] : [0, 0, 0];
+}
+
+function selectColorStop(stopId) {
+    advancedGradientData.activeStopId = stopId;
+    renderColorStops();
+    renderGradientBar();
+}
+
+// カラーピッカーを開く
+function openColorPicker(stopId) {
+    try {
+        console.log('openColorPicker called with stopId:', stopId);
+        
+        // 対象の色ストップを選択
+        selectColorStop(stopId);
+        
+        // 現在の色をカラーピッカーに設定
+        const stop = advancedGradientData.colorStops.find(s => s.id === stopId);
+        if (stop) {
+            // まず標準のカラーピッカーを試行
+            const hiddenPicker = document.getElementById('hidden-color-picker');
+            if (hiddenPicker) {
+                hiddenPicker.value = stop.color.hex;
+                console.log('Setting color picker value to:', stop.color.hex);
+                
+                // ユーザーの操作をシミュレート
+                setTimeout(() => {
+                    hiddenPicker.focus();
+                    hiddenPicker.click();
+                }, 100);
+                
+                // カラーピッカーが動作しない場合の代替手段
+                setTimeout(() => {
+                    if (!document.activeElement || document.activeElement !== hiddenPicker) {
+                        showColorPalette(stopId);
+                    }
+                }, 300);
+            } else {
+                console.error('Hidden color picker element not found');
+                showColorPalette(stopId);
+            }
+        } else {
+            console.error('Color stop not found:', stopId);
+            showNotification('色ストップが見つかりません', 'error');
+        }
+    } catch (error) {
+        console.error('Error in openColorPicker:', error);
+        showColorPalette(stopId);
+    }
+}
+
+// カラーパレットモーダルを表示
+let currentEditingStopId = null;
+
+function showColorPalette(stopId) {
+    currentEditingStopId = stopId;
+    const modal = document.getElementById('color-palette-modal');
+    const grid = document.getElementById('color-palette-grid');
+    const customInput = document.getElementById('custom-color-input');
+    
+    // 現在の色を取得
+    const currentStop = advancedGradientData.colorStops.find(s => s.id === stopId);
+    const currentColor = currentStop ? currentStop.color.hex : '#FF0000';
+    
+    // カスタム入力フィールドに現在の色を設定
+    customInput.value = currentColor;
+    
+    // カラーパレットを生成
+    const colors = [
+        // 基本色
+        '#FF0000', '#FF4000', '#FF8000', '#FFC000', '#FFFF00', '#C0FF00', '#80FF00', '#40FF00',
+        '#00FF00', '#00FF40', '#00FF80', '#00FFC0', '#00FFFF', '#00C0FF', '#0080FF', '#0040FF',
+        '#0000FF', '#4000FF', '#8000FF', '#C000FF', '#FF00FF', '#FF00C0', '#FF0080', '#FF0040',
+        
+        // 淡い色
+        '#FFB3B3', '#FFD9B3', '#FFFFB3', '#D9FFB3', '#B3FFB3', '#B3FFD9', '#B3FFFF', '#B3D9FF',
+        '#B3B3FF', '#D9B3FF', '#FFB3FF', '#FFB3D9', '#FF8080', '#FFCC80', '#FFFF80', '#CCFF80',
+        
+        // 濃い色
+        '#800000', '#804000', '#808000', '#408000', '#008000', '#008040', '#008080', '#004080',
+        '#000080', '#400080', '#800080', '#800040', '#400000', '#402000', '#404000', '#204000',
+        
+        // グレースケール
+        '#000000', '#202020', '#404040', '#606060', '#808080', '#A0A0A0', '#C0C0C0', '#E0E0E0',
+        '#FFFFFF', '#F8F8F8', '#F0F0F0', '#E8E8E8', '#D0D0D0', '#B8B8B8', '#A8A8A8', '#989898'
+    ];
+    
+    // グリッドをクリア
+    grid.innerHTML = '';
+    
+    // 色を追加
+    colors.forEach(color => {
+        const colorDiv = document.createElement('div');
+        colorDiv.className = 'palette-color';
+        colorDiv.style.backgroundColor = color;
+        colorDiv.title = color;
+        
+        // 現在の色と同じ場合は選択状態にする
+        if (color.toLowerCase() === currentColor.toLowerCase()) {
+            colorDiv.classList.add('selected');
+        }
+        
+        // クリックイベント
+        colorDiv.onclick = () => {
+            // 既存の選択を削除
+            grid.querySelectorAll('.palette-color').forEach(el => el.classList.remove('selected'));
+            // 新しい選択を追加
+            colorDiv.classList.add('selected');
+            // カスタム入力フィールドを更新
+            customInput.value = color;
+            // 色を適用
+            applySelectedColor(color);
+        };
+        
+        grid.appendChild(colorDiv);
+    });
+    
+    // モーダルを表示
+    modal.style.display = 'block';
+    
+    // Escキーでモーダルを閉じる
+    document.addEventListener('keydown', handleModalKeydown);
+}
+
+function closeColorPalette() {
+    const modal = document.getElementById('color-palette-modal');
+    modal.style.display = 'none';
+    currentEditingStopId = null;
+    document.removeEventListener('keydown', handleModalKeydown);
+}
+
+function handleModalKeydown(e) {
+    if (e.key === 'Escape') {
+        closeColorPalette();
+    }
+}
+
+function applyCustomColor() {
+    const customInput = document.getElementById('custom-color-input');
+    const color = customInput.value.trim();
+    
+    if (color) {
+        applySelectedColor(color);
+    }
+}
+
+function applySelectedColor(color) {
+    if (currentEditingStopId) {
+        updateColorFromText(currentEditingStopId, color);
+        closeColorPalette();
+    }
+}
+
+// モーダル外をクリックしたら閉じる
+document.addEventListener('click', (e) => {
+    const modal = document.getElementById('color-palette-modal');
+    if (e.target === modal) {
+        closeColorPalette();
+    }
+});
+
+// グローバルスコープに関数を設定
+window.openColorPicker = openColorPicker;
+window.updateColorFromText = updateColorFromText;
+window.updateStopPosition = updateStopPosition;
+window.removeColorStop = removeColorStop;
+window.validateColorInput = validateColorInput;
+window.addNewColorStop = addNewColorStop;
+window.showColorPalette = showColorPalette;
+window.closeColorPalette = closeColorPalette;
+window.applyCustomColor = applyCustomColor;
+
+function updateActiveStopColor(hexColor) {
+    const activeStop = advancedGradientData.colorStops.find(stop => stop.id === advancedGradientData.activeStopId);
+    if (activeStop) {
+        const rgb = hexToRgb(hexColor);
+        activeStop.color = {
+            hex: hexColor,
+            rgb: rgb,
+            rgba: [...rgb, 1]
+        };
+        renderColorStops();
+        updateGradientPreview();
+        updateCSSOutput();
+        showNotification(`色を ${hexColor} に変更しました`, 'success');
+    }
+}
+
+function updateStopPosition(stopId, position) {
+    const stop = advancedGradientData.colorStops.find(s => s.id === stopId);
+    if (stop) {
+        stop.position = Math.max(0, Math.min(100, parseInt(position)));
+        updateGradientPreview();
+        updateCSSOutput();
+    }
+}
+
+// テキストからカラーコードを更新
+function updateColorFromText(stopId, colorText) {
+    const stop = advancedGradientData.colorStops.find(s => s.id === stopId);
+    if (!stop) return;
+
+    const trimmedText = colorText.trim();
+    let newColor = null;
+
+    try {
+        // HEX形式の処理
+        if (trimmedText.match(/^#[0-9a-fA-F]{6}$/)) {
+            const hex = trimmedText.toLowerCase();
+            const rgb = hexToRgb(hex);
+            newColor = {
+                hex: hex,
+                rgb: rgb,
+                rgba: [...rgb, 1]
+            };
+        }
+        // RGB形式の処理
+        else if (trimmedText.match(/^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i)) {
+            const matches = trimmedText.match(/^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i);
+            const r = Math.max(0, Math.min(255, parseInt(matches[1])));
+            const g = Math.max(0, Math.min(255, parseInt(matches[2])));
+            const b = Math.max(0, Math.min(255, parseInt(matches[3])));
+            const hex = rgbToHex(r, g, b);
+            newColor = {
+                hex: hex,
+                rgb: [r, g, b],
+                rgba: [r, g, b, 1]
+            };
+        }
+        // RGBA形式の処理
+        else if (trimmedText.match(/^rgba\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([\d.]+)\s*\)$/i)) {
+            const matches = trimmedText.match(/^rgba\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*([\d.]+)\s*\)$/i);
+            const r = Math.max(0, Math.min(255, parseInt(matches[1])));
+            const g = Math.max(0, Math.min(255, parseInt(matches[2])));
+            const b = Math.max(0, Math.min(255, parseInt(matches[3])));
+            const a = Math.max(0, Math.min(1, parseFloat(matches[4])));
+            const hex = rgbToHex(r, g, b);
+            newColor = {
+                hex: hex,
+                rgb: [r, g, b],
+                rgba: [r, g, b, a]
+            };
+        }
+        // 3桁HEX形式の処理
+        else if (trimmedText.match(/^#[0-9a-fA-F]{3}$/)) {
+            const hex3 = trimmedText.toLowerCase();
+            const hex6 = '#' + hex3[1] + hex3[1] + hex3[2] + hex3[2] + hex3[3] + hex3[3];
+            const rgb = hexToRgb(hex6);
+            newColor = {
+                hex: hex6,
+                rgb: rgb,
+                rgba: [...rgb, 1]
+            };
+        }
+        // CSS色名の処理
+        else {
+            const cssColorHex = getCSSColorHex(trimmedText);
+            if (cssColorHex) {
+                const rgb = hexToRgb(cssColorHex);
+                newColor = {
+                    hex: cssColorHex,
+                    rgb: rgb,
+                    rgba: [...rgb, 1]
+                };
+            }
+        }
+
+        // 有効な色が見つかった場合は更新
+        if (newColor) {
+            stop.color = newColor;
+            updateGradientPreview();
+            updateCSSOutput();
+            renderColorStops();
+            showNotification('カラーコードを更新しました', 'success');
+        } else {
+            // 無効な形式の場合は元に戻して警告
+            renderColorStops();
+            showNotification('無効なカラーコード形式です', 'error');
+        }
+    } catch (error) {
+        // エラーが発生した場合は元に戻す
+        renderColorStops();
+        showNotification('カラーコードの解析に失敗しました', 'error');
+    }
+}
+
+// RGBからHEXに変換
+function rgbToHex(r, g, b) {
+    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
+
+// CSS色名からHEXに変換
+function getCSSColorHex(colorName) {
+    const cssColors = {
+        // 基本色
+        'red': '#ff0000',
+        'green': '#008000',
+        'blue': '#0000ff',
+        'yellow': '#ffff00',
+        'cyan': '#00ffff',
+        'magenta': '#ff00ff',
+        'black': '#000000',
+        'white': '#ffffff',
+        'gray': '#808080',
+        'grey': '#808080',
+        
+        // 拡張色
+        'orange': '#ffa500',
+        'purple': '#800080',
+        'pink': '#ffc0cb',
+        'brown': '#a52a2a',
+        'lime': '#00ff00',
+        'navy': '#000080',
+        'teal': '#008080',
+        'aqua': '#00ffff',
+        'fuchsia': '#ff00ff',
+        'silver': '#c0c0c0',
+        'maroon': '#800000',
+        'olive': '#808000',
+        
+        // 人気色
+        'lightblue': '#add8e6',
+        'lightgreen': '#90ee90',
+        'lightpink': '#ffb6c1',
+        'lightyellow': '#ffffe0',
+        'lightgray': '#d3d3d3',
+        'lightgrey': '#d3d3d3',
+        'darkblue': '#00008b',
+        'darkgreen': '#006400',
+        'darkred': '#8b0000',
+        'darkgray': '#a9a9a9',
+        'darkgrey': '#a9a9a9',
+        
+        // トレンド色
+        'coral': '#ff7f50',
+        'salmon': '#fa8072',
+        'gold': '#ffd700',
+        'khaki': '#f0e68c',
+        'lavender': '#e6e6fa',
+        'turquoise': '#40e0d0',
+        'crimson': '#dc143c',
+        'indigo': '#4b0082',
+        'violet': '#ee82ee',
+        'snow': '#fffafa'
+    };
+    
+    const normalizedName = colorName.toLowerCase().trim();
+    return cssColors[normalizedName] || null;
+}
+
+// リアルタイムカラー入力バリデーション
+function validateColorInput(inputElement, stopId) {
+    const value = inputElement.value.trim();
+    
+    // 空の場合はデフォルトスタイル
+    if (!value) {
+        inputElement.className = 'color-value-input';
+        return;
+    }
+    
+    // カラーコードの有効性をチェック
+    const isValid = 
+        value.match(/^#[0-9a-fA-F]{6}$/) ||
+        value.match(/^#[0-9a-fA-F]{3}$/) ||
+        value.match(/^rgb\s*\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)$/i) ||
+        value.match(/^rgba\s*\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*,\s*[\d.]+\s*\)$/i) ||
+        getCSSColorHex(value);
+    
+    // 有効性に応じてスタイルを変更
+    if (isValid) {
+        inputElement.className = 'color-value-input valid-color';
+    } else {
+        inputElement.className = 'color-value-input invalid-color';
+    }
+}
+
+function addNewColorStop() {
+    const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+    const rgb = hexToRgb(randomColor);
+    const newPosition = advancedGradientData.colorStops.length > 0 ? 
+        Math.min(Math.max(...advancedGradientData.colorStops.map(s => s.position)) + 10, 100) : 50;
+    
+    const newStop = {
+        id: nextStopId++,
+        color: {
+            hex: randomColor,
+            rgb: rgb,
+            rgba: [...rgb, 1]
+        },
+        position: newPosition
+    };
+    
+    advancedGradientData.colorStops.push(newStop);
+    advancedGradientData.activeStopId = newStop.id;
+    
+    renderColorStops();
+    updateGradientPreview();
+    updateCSSOutput();
+}
+
+function addNewColorStopAtPosition(position) {
+    const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+    const rgb = hexToRgb(randomColor);
+    
+    const newStop = {
+        id: nextStopId++,
+        color: {
+            hex: randomColor,
+            rgb: rgb,
+            rgba: [...rgb, 1]
+        },
+        position: Math.max(0, Math.min(100, position))
+    };
+    
+    advancedGradientData.colorStops.push(newStop);
+    advancedGradientData.activeStopId = newStop.id;
+    
+    renderColorStops();
+    updateGradientPreview();
+    updateCSSOutput();
+}
+
+function removeColorStop(stopId) {
+    if (advancedGradientData.colorStops.length > 2) {
+        advancedGradientData.colorStops = advancedGradientData.colorStops.filter(stop => stop.id !== stopId);
+        if (advancedGradientData.activeStopId === stopId) {
+            advancedGradientData.activeStopId = advancedGradientData.colorStops[0].id;
+        }
+        renderColorStops();
+        updateGradientPreview();
+        updateCSSOutput();
+    }
+}
+
+function applyPreset(presetStops) {
+    advancedGradientData.colorStops = presetStops.map((stop, index) => ({
+        id: nextStopId++,
+        color: stop,
+        position: stop.position
+    }));
+    advancedGradientData.activeStopId = advancedGradientData.colorStops[0].id;
+    
+    renderColorStops();
+    updateGradientPreview();
+    updateCSSOutput();
+}
+
+function copyGradientCSS() {
+    const output = document.getElementById('css-output');
+    output.select();
+    document.execCommand('copy');
+    showNotification('CSSをクリップボードにコピーしました！', 'success');
+}
+
+// ドラッグ関連の変数
+let isDraggingColorStop = false;
+let dragStopId = null;
+let gradientBarRect = null;
+
+// 色ストップのドラッグ開始
+function startDragColorStop(e, stopId) {
+    isDraggingColorStop = true;
+    dragStopId = stopId;
+    
+    // グラデーションバーの位置情報を取得
+    const gradientBar = document.getElementById('gradient-bar');
+    gradientBarRect = gradientBar.getBoundingClientRect();
+    
+    // アクティブな色ストップに設定
+    selectColorStop(stopId);
+    
+    // ドキュメントレベルでマウスイベントを監視
+    document.addEventListener('mousemove', onDragColorStop);
+    document.addEventListener('mouseup', endDragColorStop);
+    
+    // カーソルを変更
+    document.body.style.cursor = 'grabbing';
+    
+    // テキスト選択を無効化
+    document.body.style.userSelect = 'none';
+}
+
+// 色ストップのドラッグ中
+function onDragColorStop(e) {
+    if (!isDraggingColorStop || !dragStopId || !gradientBarRect) return;
+    
+    // マウス位置からパーセンテージを計算
+    const relativeX = e.clientX - gradientBarRect.left;
+    const percentage = Math.max(0, Math.min(100, (relativeX / gradientBarRect.width) * 100));
+    
+    // 色ストップの位置を更新
+    const stop = advancedGradientData.colorStops.find(s => s.id === dragStopId);
+    if (stop) {
+        stop.position = Math.round(percentage);
+        
+        // UIを更新
+        updateGradientPreview();
+        updateCSSOutput();
+        renderColorStops();
+        
+        // マーカーの位置も即座に更新
+        const markers = document.querySelectorAll('.color-stop-marker');
+        markers.forEach(marker => {
+            if (parseInt(marker.dataset.stopId) === dragStopId) {
+                marker.style.left = `${stop.position}%`;
+            }
+        });
+    }
+}
+
+// 色ストップのドラッグ終了
+function endDragColorStop() {
+    if (!isDraggingColorStop) return;
+    
+    isDraggingColorStop = false;
+    dragStopId = null;
+    gradientBarRect = null;
+    
+    // イベントリスナーを削除
+    document.removeEventListener('mousemove', onDragColorStop);
+    document.removeEventListener('mouseup', endDragColorStop);
+    
+    // カーソルとテキスト選択を元に戻す
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+    
+    // 最終的なレンダリング
+    renderGradientBar();
+}
+
+// グローバルイベントリスナー（予約用）
+// カラーピッカーの処理は openColorPicker 関数で管理
 
 // ボックスシャドウジェネレーター
 function initializeBoxShadowGenerator() {

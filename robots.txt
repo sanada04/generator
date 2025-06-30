@@ -1,24 +1,48 @@
 User-agent: *
 Allow: /
 
-# XMLサイトマップの場所
+# 重要なページ
+Allow: /gradation/
+Allow: /box-shadow/
+Allow: /border-radius/
+Allow: /grid/
+Allow: /flexbox/
+Allow: /text-shadow/
+Allow: /transform/
+Allow: /margin-padding/
+Allow: /animation/
+Allow: /contact/
+Allow: /en/
+
+# 英語版ページ
+Allow: /en/gradation/
+Allow: /en/box-shadow/
+Allow: /en/border-radius/
+Allow: /en/grid/
+Allow: /en/flexbox/
+Allow: /en/text-shadow/
+Allow: /en/transform/
+Allow: /en/margin-padding/
+Allow: /en/animation/
+Allow: /en/contact/
+
+# アップロードディレクトリはブロック
+Disallow: /contact/uploads/
+Disallow: /en/contact/uploads/
+
+# Googlebot向けクロール遅延
+Crawl-delay: 1
+
+# サイトマップの場所
 Sitemap: https://css-style-maker.com/sitemap.xml
 
-# クロール頻度の調整
+# Bing向け設定
+User-agent: bingbot
 Crawl-delay: 1
 
-# 特定のボットに対する設定
-User-agent: Googlebot
-Allow: /
-Crawl-delay: 0
-
-User-agent: Bingbot
-Allow: /
-Crawl-delay: 1
-
+# Yahoo向け設定
 User-agent: Slurp
-Allow: /
-Crawl-delay: 2
+Crawl-delay: 1
 
 # 404ページは除外
 Disallow: /404.html
@@ -42,4 +66,4 @@ Allow: /ads.txt
 # ファビコンとアセットファイルは許可
 Allow: /assets/
 Allow: /favicon*
-Allow: /apple-touch-icon.png 
+Allow: /apple-touch-icon.png

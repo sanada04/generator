@@ -86,7 +86,6 @@
 
 .contact-header {
   text-align: center;
-  margin-bottom: 40px;
 }
 
 .contact-header h1 {
@@ -110,6 +109,7 @@
   padding: 30px;
   border-radius: 12px;
   border: 2px solid #e9ecef;
+  margin-top: 20px;
 }
 
 .contact-form h2 {
@@ -216,10 +216,10 @@
   padding: 20px;
   border-radius: 8px;
   border-left: 4px solid #ffc107;
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
-.contact-info h3 {
+.contact-info h2 {
   color: #856404;
   margin-bottom: 10px;
 }
@@ -374,68 +374,68 @@
 <p>Feel free to contact us with any questions, feedback, or bug reports<br>regarding CSS Generator.</p>
 </div>
 
-    <div id="contact-form" class="contact-form">
-      <h2><i class="fas fa-paper-plane"></i> Contact Form</h2>
-      <form id="contactForm" action="process_contact.php" method="POST" enctype="multipart/form-data">
-        <div class="form-group">
-          <label for="name">Name <span class="required">*</span></label>
-          <input type="text" id="name" name="name" required>
-        </div>
-
-        <div class="form-group">
-          <label for="email">Email Address <span class="required">*</span></label>
-          <input type="email" id="email" name="email" required>
-        </div>
-
-        <div class="form-group">
-          <label for="subject">Inquiry Type <span class="required">*</span></label>
-          <select id="subject" name="subject" required>
-            <option value="">Please select</option>
-            <option value="bug">Bug Report / Error</option>
-            <option value="feature">Feature Request / Suggestion</option>
-            <option value="usage">Usage Questions</option>
-            <option value="improvement">Site Improvement Suggestion</option>
-            <option value="collaboration">Collaboration Inquiry</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="message">Message <span class="required">*</span></label>
-          <textarea id="message" name="message" placeholder="Please describe the specific situation, error details, browser/device information, etc." required></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="attachments">Attachments</label>
-          <div class="file-upload-container">
-            <input type="file" id="attachments" name="attachments[]" multiple accept="image/*,.pdf,.doc,.docx,.txt" class="file-input">
-            <label for="attachments" class="file-upload-label">
-              <i class="fas fa-cloud-upload-alt"></i>
-              <span>Choose files or drag and drop</span>
-              <small>Images, PDF, Documents (Max 5MB, up to 5 files)</small>
-            </label>
-            <div id="file-list" class="file-list"></div>
-          </div>
-        </div>
-
-        <div class="form-submit">
-          <button type="submit" id="submitBtn">
-            <i class="fas fa-paper-plane"></i> Send Message
-          </button>
-        </div>
-
-        <div id="responseMessage" class="response-message"></div>
-      </form>
-    </div>
-
 <div class="contact-info">
-<h3><i class="fas fa-info-circle"></i> Please Note</h3>
+<h2><i class="fas fa-info-circle"></i> Please Note</h2>
 <ul>
 <li>Please provide specific situation or error details</li>
 <li>Browser and device information would be helpful</li>
 <li>Screenshots can help resolve issues faster</li>
 <li>We usually respond within 24 hours (responses may be delayed on weekends and holidays)</li>
 </ul>
+</div>
+
+<div id="contact-form" class="contact-form">
+<h2><i class="fas fa-paper-plane"></i> Contact Form</h2>
+<form id="contactForm" action="process_contact.php" method="POST" enctype="multipart/form-data">
+<div class="form-group">
+<label for="name">Name <span class="required">*</span></label>
+<input type="text" id="name" name="name" required>
+</div>
+
+<div class="form-group">
+<label for="email">Email Address <span class="required">*</span></label>
+<input type="email" id="email" name="email" required>
+</div>
+
+<div class="form-group">
+<label for="subject">Inquiry Type <span class="required">*</span></label>
+<select id="subject" name="subject" required>
+<option value="">Please select</option>
+<option value="bug">Bug Report / Error</option>
+<option value="feature">Feature Request / Suggestion</option>
+<option value="usage">Usage Questions</option>
+<option value="improvement">Site Improvement Suggestion</option>
+<option value="collaboration">Collaboration Inquiry</option>
+<option value="other">Other</option>
+</select>
+</div>
+
+<div class="form-group">
+<label for="message">Message <span class="required">*</span></label>
+<textarea id="message" name="message" placeholder="Please describe the specific situation, error details, browser/device information, etc." required></textarea>
+</div>
+
+<div class="form-group">
+<label for="attachments">Attachments</label>
+<div class="file-upload-container">
+<input type="file" id="attachments" name="attachments[]" multiple accept="image/*,.pdf,.doc,.docx,.txt" class="file-input">
+<label for="attachments" class="file-upload-label">
+<i class="fas fa-cloud-upload-alt"></i>
+<span>Choose files or drag and drop</span>
+<small>Images, PDF, Documents (Max 5MB, up to 5 files)</small>
+</label>
+<div id="file-list" class="file-list"></div>
+</div>
+</div>
+
+<div class="form-submit">
+<button type="submit" id="submitBtn">
+<i class="fas fa-paper-plane"></i> Send Message
+</button>
+</div>
+
+<div id="responseMessage" class="response-message"></div>
+</form>
 </div>
 </div>
 </main>

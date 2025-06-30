@@ -1636,40 +1636,6 @@ const modalData = {
             </div>
         `
     },
-    contact: {
-        title: '<i class="fas fa-envelope"></i> お問い合わせ',
-        content: `
-            <h3>お問い合わせについて</h3>
-            <p>CSSスタイルメーカーに関するご質問、ご要望、不具合報告などがございましたら、以下の方法でお気軽にお問い合わせください。</p>
-
-            <div class="contact-info">
-                <h4><i class="fab fa-x-twitter"></i> X（旧Twitter）</h4>
-                <p><a href="https://x.com/sanada_ejs" target="_blank">@sanada_ejs</a></p>
-                <p>最も迅速に対応可能です。DMまたはメンションでお気軽にご連絡ください。</p>
-            </div>
-
-            <h3>お問い合わせ内容例</h3>
-            <ul>
-                <li>新機能のご要望・ご提案</li>
-                <li>操作方法に関するご質問</li>
-                <li>不具合やエラーの報告</li>
-                <li>サイトの改善提案</li>
-                <li>コラボレーションのご相談</li>
-                <li>その他、サイトに関するご意見</li>
-            </ul>
-
-            <h3>お問い合わせ時のお願い</h3>
-            <ul>
-                <li>具体的な状況やエラー内容をお教えください</li>
-                <li>ご利用のブラウザ・デバイス情報があると助かります</li>
-                <li>スクリーンショットがあると問題解決が早くなります</li>
-            </ul>
-
-            <div class="highlight">
-                <p><strong>対応時間:</strong> 通常24時間以内にご返信いたします。土日祝日は返信が遅れる場合がございます。</p>
-            </div>
-        `
-    },
     privacy: {
         title: '<i class="fas fa-shield-alt"></i> プライバシーポリシー',
         content: `
@@ -1807,28 +1773,6 @@ const modalDataEn = {
                 <li>CSS beginners</li>
                 <li>Anyone who wants to create beautiful web designs</li>
             </ul>
-        `
-    },
-    contact: {
-        title: 'Contact',
-        content: `
-            <h3>Contact Information</h3>
-            <p>If you have any questions, feedback, or requests regarding CSS Style Maker, please contact us through the following methods:</p>
-
-            <div class="contact-info">
-                <h4>X (formerly Twitter)</h4>
-                <p><a href="https://x.com/sanada_ejs" target="_blank">@sanada_ejs</a></p>
-            </div>
-
-            <h3>Feedback Welcome</h3>
-            <ul>
-                <li>Bug reports</li>
-                <li>Feature requests</li>
-                <li>Improvement suggestions</li>
-                <li>Questions about usage</li>
-            </ul>
-
-            <p>We appreciate your feedback to make CSS Style Maker even better.</p>
         `
     },
     privacy: {

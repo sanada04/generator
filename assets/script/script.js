@@ -202,10 +202,7 @@ function setupEventListeners() {
         addNewColorStopAtPosition(position);
     });
 
-    // カラーピッカー
-    document.getElementById('hidden-color-picker').addEventListener('change', (e) => {
-        updateActiveStopColor(e.target.value);
-    });
+    // カラーピッカー（openColorPicker関数内で動的に設定）
 }
 
 // 色ストップのレンダリング
@@ -235,22 +232,65 @@ function renderColorStops() {
         
         stopElement.innerHTML = `
             <div class="color-preview" style="background-color: ${stop.color.hex}" 
-                 onclick="openColorPicker(${stop.id})" title="クリックして色を選択"></div>
+                 title="クリックして色を選択" data-stop-id="${stop.id}"></div>
             <input type="text" class="color-value-input" value="${getColorValue(stop.color)}" 
-                   onchange="updateColorFromText(${stop.id}, this.value)"
-                   onblur="updateColorFromText(${stop.id}, this.value)"
-                   oninput="validateColorInput(this, ${stop.id})"
+                   data-stop-id="${stop.id}"
                    onclick="this.select()"
                    placeholder="${placeholder}">
             <input type="number" class="position-input" value="${stop.position}" 
-                   min="0" max="100" onchange="updateStopPosition(${stop.id}, this.value)">
+                   min="0" max="100" data-stop-id="${stop.id}">
             <span>%</span>
             ${advancedGradientData.colorStops.length > 2 ? 
-                `<button class="remove-stop-btn" onclick="removeColorStop(${stop.id})">
+                `<button class="remove-stop-btn" data-stop-id="${stop.id}">
                     <i class="fas fa-trash"></i>
                 </button>` : ''
             }
-        `;
+                `;
+        
+        // カラーパレットを生成してbodyに追加（存在しない場合のみ）
+        if (!document.getElementById(`color-palette-${stop.id}`)) {
+            console.log('Creating palette for stopId:', stop.id);
+            const paletteElement = createColorPalette(stop.id);
+            document.body.appendChild(paletteElement);
+            console.log('Palette created and added to body:', paletteElement.id);
+        } else {
+            console.log('Palette already exists for stopId:', stop.id);
+        }
+        
+        // イベントリスナーを追加
+        const colorPreview = stopElement.querySelector('.color-preview');
+        const colorInput = stopElement.querySelector('.color-value-input');
+        const positionInput = stopElement.querySelector('.position-input');
+        const removeBtn = stopElement.querySelector('.remove-stop-btn');
+        
+        // カラープレビューのクリック
+        colorPreview.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openColorPicker(stop.id, e.target);
+        });
+        
+        // カラー値の変更
+        colorInput.addEventListener('change', (e) => {
+            updateColorFromText(stop.id, e.target.value);
+        });
+        colorInput.addEventListener('blur', (e) => {
+            updateColorFromText(stop.id, e.target.value);
+        });
+        colorInput.addEventListener('input', (e) => {
+            validateColorInput(e.target, stop.id);
+        });
+        
+        // 位置の変更
+        positionInput.addEventListener('change', (e) => {
+            updateStopPosition(stop.id, e.target.value);
+        });
+        
+        // 削除ボタン
+        if (removeBtn) {
+            removeBtn.addEventListener('click', () => {
+                removeColorStop(stop.id);
+            });
+        }
         container.appendChild(stopElement);
     });
 }
@@ -424,157 +464,327 @@ function selectColorStop(stopId) {
 }
 
 // カラーピッカーを開く
-function openColorPicker(stopId) {
+function openColorPicker(stopId, triggerElement = null) {
     try {
-        console.log('openColorPicker called with stopId:', stopId);
+        console.log('openColorPicker called with:', stopId, triggerElement);
         
         // 対象の色ストップを選択
         selectColorStop(stopId);
         
-        // 現在の色をカラーピッカーに設定
-        const stop = advancedGradientData.colorStops.find(s => s.id === stopId);
-        if (stop) {
-            // まず標準のカラーピッカーを試行
-            const hiddenPicker = document.getElementById('hidden-color-picker');
-            if (hiddenPicker) {
-                hiddenPicker.value = stop.color.hex;
-                console.log('Setting color picker value to:', stop.color.hex);
-                
-                // ユーザーの操作をシミュレート
-                setTimeout(() => {
-                    hiddenPicker.focus();
-                    hiddenPicker.click();
-                }, 100);
-                
-                // カラーピッカーが動作しない場合の代替手段
-                setTimeout(() => {
-                    if (!document.activeElement || document.activeElement !== hiddenPicker) {
-                        showColorPalette(stopId);
-                    }
-                }, 300);
-            } else {
-                console.error('Hidden color picker element not found');
-                showColorPalette(stopId);
-            }
-        } else {
-            console.error('Color stop not found:', stopId);
-            showNotification('色ストップが見つかりません', 'error');
-        }
+        // カスタムパレットを表示
+        showColorPalette(stopId, triggerElement);
+        
     } catch (error) {
         console.error('Error in openColorPicker:', error);
-        showColorPalette(stopId);
     }
 }
 
-// カラーパレットモーダルを表示
-let currentEditingStopId = null;
 
-function showColorPalette(stopId) {
-    currentEditingStopId = stopId;
-    const modal = document.getElementById('color-palette-modal');
-    const grid = document.getElementById('color-palette-grid');
-    const customInput = document.getElementById('custom-color-input');
+
+
+
+// カラーパレットの位置を設定
+// カラーパレットを作成
+function createColorPalette(stopId) {
+    console.log('createColorPalette called for stopId:', stopId);
     
-    // 現在の色を取得
-    const currentStop = advancedGradientData.colorStops.find(s => s.id === stopId);
-    const currentColor = currentStop ? currentStop.color.hex : '#FF0000';
+    const paletteElement = document.createElement('div');
+    paletteElement.className = 'color-palette-popup';
+    paletteElement.id = `color-palette-${stopId}`;
     
-    // カスタム入力フィールドに現在の色を設定
-    customInput.value = currentColor;
+    // 初期位置を画面外に設定
+    paletteElement.style.left = '-9999px';
+    paletteElement.style.top = '-9999px';
     
-    // カラーパレットを生成
-    const colors = [
-        // 基本色
-        '#FF0000', '#FF4000', '#FF8000', '#FFC000', '#FFFF00', '#C0FF00', '#80FF00', '#40FF00',
-        '#00FF00', '#00FF40', '#00FF80', '#00FFC0', '#00FFFF', '#00C0FF', '#0080FF', '#0040FF',
-        '#0000FF', '#4000FF', '#8000FF', '#C000FF', '#FF00FF', '#FF00C0', '#FF0080', '#FF0040',
-        
-        // 淡い色
-        '#FFB3B3', '#FFD9B3', '#FFFFB3', '#D9FFB3', '#B3FFB3', '#B3FFD9', '#B3FFFF', '#B3D9FF',
-        '#B3B3FF', '#D9B3FF', '#FFB3FF', '#FFB3D9', '#FF8080', '#FFCC80', '#FFFF80', '#CCFF80',
-        
-        // 濃い色
-        '#800000', '#804000', '#808000', '#408000', '#008000', '#008040', '#008080', '#004080',
-        '#000080', '#400080', '#800080', '#800040', '#400000', '#402000', '#404000', '#204000',
-        
-        // グレースケール
-        '#000000', '#202020', '#404040', '#606060', '#808080', '#A0A0A0', '#C0C0C0', '#E0E0E0',
-        '#FFFFFF', '#F8F8F8', '#F0F0F0', '#E8E8E8', '#D0D0D0', '#B8B8B8', '#A8A8A8', '#989898'
-    ];
+    console.log('Palette element created:', paletteElement);
     
-    // グリッドをクリア
-    grid.innerHTML = '';
+    paletteElement.innerHTML = `
+        <div class="color-palette-content">
+            <div class="color-palette-header">
+                <h3>色を選択</h3>
+                <button class="color-palette-close" data-stop-id="${stopId}">&times;</button>
+            </div>
+            <div class="color-palette-grid" id="color-palette-grid-${stopId}"></div>
+            <div class="color-palette-custom">
+                <button class="color-picker-button" id="color-picker-btn-${stopId}">
+                    <i class="fas fa-eyedropper"></i>
+                </button>
+                <input type="color" id="default-color-picker-${stopId}" style="display: none;" />
+                <input type="text" id="custom-color-input-${stopId}" placeholder="#FF0000" style="flex: 1; margin-left: 10px;" />
+                <button class="apply-custom-color" data-stop-id="${stopId}">適用</button>
+            </div>
+        </div>
+    `;
     
-    // 色を追加
-    colors.forEach(color => {
-        const colorDiv = document.createElement('div');
-        colorDiv.className = 'palette-color';
-        colorDiv.style.backgroundColor = color;
-        colorDiv.title = color;
-        
-        // 現在の色と同じ場合は選択状態にする
-        if (color.toLowerCase() === currentColor.toLowerCase()) {
-            colorDiv.classList.add('selected');
-        }
-        
-        // クリックイベント
-        colorDiv.onclick = () => {
-            // 既存の選択を削除
-            grid.querySelectorAll('.palette-color').forEach(el => el.classList.remove('selected'));
-            // 新しい選択を追加
-            colorDiv.classList.add('selected');
-            // カスタム入力フィールドを更新
-            customInput.value = color;
-            // 色を適用
-            applySelectedColor(color);
-        };
-        
-        grid.appendChild(colorDiv);
+    // イベントリスナーを追加
+    const closeBtn = paletteElement.querySelector('.color-palette-close');
+    const applyBtn = paletteElement.querySelector('.apply-custom-color');
+    const customInput = paletteElement.querySelector(`#custom-color-input-${stopId}`);
+    const defaultPicker = paletteElement.querySelector(`#default-color-picker-${stopId}`);
+    const colorPickerBtn = paletteElement.querySelector(`#color-picker-btn-${stopId}`);
+    
+    closeBtn.addEventListener('click', () => {
+        closeColorPalette(stopId);
     });
     
-    // モーダルを表示
-    modal.style.display = 'block';
+    applyBtn.addEventListener('click', () => {
+        applyCustomColor(stopId);
+    });
     
-    // Escキーでモーダルを閉じる
-    document.addEventListener('keydown', handleModalKeydown);
+    // スポイトボタンクリックでカラーピッカーを開く
+    colorPickerBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        defaultPicker.click();
+    });
+    
+    // デフォルトピッカーの変更イベント
+    defaultPicker.addEventListener('change', (e) => {
+        const selectedColor = e.target.value;
+        customInput.value = selectedColor;
+        applySelectedColor(stopId, selectedColor);
+    });
+    
+    // カスタム入力でEnterキーを押した時
+    customInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            applyCustomColor(stopId);
+        }
+    });
+    
+    return paletteElement;
 }
 
-function closeColorPalette() {
-    const modal = document.getElementById('color-palette-modal');
-    modal.style.display = 'none';
-    currentEditingStopId = null;
-    document.removeEventListener('keydown', handleModalKeydown);
+// カラーパレットを表示
+let currentEditingStopId = null;
+let currentTriggerElement = null;
+
+function showColorPalette(stopId, triggerElement = null) {
+    try {
+        console.log('showColorPalette called with:', stopId, triggerElement);
+        
+        // 他のパレットを閉じる
+        closeAllColorPalettes();
+        
+        currentEditingStopId = stopId;
+        
+        // パレットを生成してbodyに追加（存在しない場合のみ）
+        if (!document.getElementById(`color-palette-${stopId}`)) {
+            console.log('Creating palette for stopId:', stopId);
+            const paletteElement = createColorPalette(stopId);
+            document.body.appendChild(paletteElement);
+            console.log('Palette created and added to body:', paletteElement.id);
+        }
+        
+        const palette = document.getElementById(`color-palette-${stopId}`);
+        const grid = document.getElementById(`color-palette-grid-${stopId}`);
+        const customInput = document.getElementById(`custom-color-input-${stopId}`);
+        const defaultPicker = document.getElementById(`default-color-picker-${stopId}`);
+        
+        console.log('Found elements:', { palette, grid, customInput, defaultPicker });
+        
+        if (!palette || !grid || !customInput || !defaultPicker) {
+            console.error('Color palette elements not found for stopId:', stopId);
+            return;
+        }
+        
+        // 現在の色を取得
+        const currentStop = advancedGradientData.colorStops.find(s => s.id === stopId);
+        const currentColor = currentStop ? currentStop.color.hex : '#FF0000';
+        
+        // カスタム入力フィールドとデフォルトピッカーに現在の色を設定
+        customInput.value = currentColor;
+        defaultPicker.value = currentColor;
+        
+        // カラーパレットを生成
+        const colors = [
+            // 基本色
+            '#FF0000', '#FF4000', '#FF8000', '#FFC000', '#FFFF00', '#C0FF00', '#80FF00', '#40FF00',
+            '#00FF00', '#00FF40', '#00FF80', '#00FFC0', '#00FFFF', '#00C0FF', '#0080FF', '#0040FF',
+            '#0000FF', '#4000FF', '#8000FF', '#C000FF', '#FF00FF', '#FF00C0', '#FF0080', '#FF0040',
+            
+            // 淡い色
+            '#FFB3B3', '#FFD9B3', '#FFFFB3', '#D9FFB3', '#B3FFB3', '#B3FFD9', '#B3FFFF', '#B3D9FF',
+            '#B3B3FF', '#D9B3FF', '#FFB3FF', '#FFB3D9', '#FF8080', '#FFCC80', '#FFFF80', '#CCFF80',
+            
+            // 濃い色
+            '#800000', '#804000', '#808000', '#408000', '#008000', '#008040', '#008080', '#004080',
+            '#000080', '#400080', '#800080', '#800040', '#400000', '#402000', '#404000', '#204000',
+            
+            // グレースケール
+            '#000000', '#202020', '#404040', '#606060', '#808080', '#A0A0A0', '#C0C0C0', '#E0E0E0',
+            '#FFFFFF', '#F8F8F8', '#F0F0F0', '#E8E8E8', '#D0D0D0', '#B8B8B8', '#A8A8A8', '#989898'
+        ];
+        
+        // グリッドをクリア
+        grid.innerHTML = '';
+        
+        // 色を追加
+        colors.forEach(color => {
+            const colorDiv = document.createElement('div');
+            colorDiv.className = 'palette-color';
+            colorDiv.style.backgroundColor = color;
+            colorDiv.title = color;
+            
+            // 現在の色と同じ場合は選択状態にする
+            if (color.toLowerCase() === currentColor.toLowerCase()) {
+                colorDiv.classList.add('selected');
+            }
+            
+            // クリックイベント
+            colorDiv.onclick = () => {
+                // 既存の選択を削除
+                grid.querySelectorAll('.palette-color').forEach(el => el.classList.remove('selected'));
+                // 新しい選択を追加
+                colorDiv.classList.add('selected');
+                // カスタム入力フィールドとデフォルトピッカーを更新
+                customInput.value = color;
+                defaultPicker.value = color;
+                // 色を適用
+                applySelectedColor(stopId, color);
+            };
+            
+            grid.appendChild(colorDiv);
+        });
+        
+        // パレットの位置を設定
+        positionColorPalette(palette, stopId, triggerElement);
+        
+        // パレットを表示
+        palette.classList.add('show');
+        
+        // イベントリスナーを追加
+        document.addEventListener('keydown', handleModalKeydown);
+        setTimeout(() => {
+            document.addEventListener('click', handleDocumentClick);
+        }, 100); // 少し遅延させて、このクリックイベントを無視
+        
+    } catch (error) {
+        console.error('Error in showColorPalette:', error, 'stopId:', stopId, 'triggerElement:', triggerElement);
+    }
+}
+
+// カラーパレットの位置を設定
+function positionColorPalette(palette, stopId, triggerElement = null) {
+    let colorPreview = triggerElement;
+    
+    // triggerElementが指定されていない場合、data-stop-idで検索
+    if (!colorPreview) {
+        colorPreview = document.querySelector(`.color-preview[data-stop-id="${stopId}"]`);
+    }
+    
+    if (!colorPreview) {
+        console.error('Color preview not found for stopId:', stopId);
+        return;
+    }
+    
+    console.log('Positioning palette for:', colorPreview);
+    
+    // .color-previewの位置とサイズを取得
+    const previewRect = colorPreview.getBoundingClientRect();
+    console.log('Preview rect:', previewRect);
+    
+    // パレットのサイズを固定値で設定
+    const paletteWidth = 320;
+    const paletteHeight = 450;
+    
+    // .color-previewを基準とした位置計算
+    let left = previewRect.left;
+    let top = previewRect.bottom + 8; // 8pxの余白
+    
+    console.log('Initial position:', left, top);
+    
+    // 画面境界の調整
+    if (left + paletteWidth > window.innerWidth - 20) {
+        left = window.innerWidth - paletteWidth - 20;
+    }
+    if (left < 20) {
+        left = 20;
+    }
+    if (top + paletteHeight > window.innerHeight - 20) {
+        top = previewRect.top - paletteHeight - 8;
+    }
+    if (top < 20) {
+        top = 20;
+    }
+    
+    console.log('Final position:', left, top);
+    
+    // 位置を設定
+    palette.style.left = `${Math.round(left)}px`;
+    palette.style.top = `${Math.round(top)}px`;
+    
+    console.log('Palette positioned at:', palette.style.left, palette.style.top);
+}
+
+// 全てのカラーパレットを閉じる
+function closeAllColorPalettes() {
+    const palettes = document.querySelectorAll('.color-palette-popup.show');
+    palettes.forEach(palette => {
+        palette.classList.remove('show');
+    });
+}
+
+function closeColorPalette(stopId) {
+    const palette = document.getElementById(`color-palette-${stopId}`);
+    if (palette) {
+        palette.classList.remove('show');
+    }
+    
+    if (currentEditingStopId === stopId) {
+        currentEditingStopId = null;
+        currentTriggerElement = null;
+        document.removeEventListener('keydown', handleModalKeydown);
+        document.removeEventListener('click', handleDocumentClick);
+    }
 }
 
 function handleModalKeydown(e) {
     if (e.key === 'Escape') {
-        closeColorPalette();
+        closeAllColorPalettes();
+        currentEditingStopId = null;
+        currentTriggerElement = null;
+        document.removeEventListener('keydown', handleModalKeydown);
+        document.removeEventListener('click', handleDocumentClick);
     }
 }
 
-function applyCustomColor() {
-    const customInput = document.getElementById('custom-color-input');
+// ドキュメントクリック処理
+function handleDocumentClick(e) {
+    const palettes = document.querySelectorAll('.color-palette-popup.show');
+    let clickedInsidePalette = false;
+    
+    palettes.forEach(palette => {
+        if (palette.contains(e.target)) {
+            clickedInsidePalette = true;
+        }
+    });
+    
+    // カラーパレット外のクリックの場合、全てのパレットを閉じる
+    if (!clickedInsidePalette) {
+        closeAllColorPalettes();
+        currentEditingStopId = null;
+        currentTriggerElement = null;
+        document.removeEventListener('keydown', handleModalKeydown);
+        document.removeEventListener('click', handleDocumentClick);
+    }
+}
+
+function applyCustomColor(stopId) {
+    const customInput = document.getElementById(`custom-color-input-${stopId}`);
     const color = customInput.value.trim();
     
     if (color) {
-        applySelectedColor(color);
+        applySelectedColor(stopId, color);
     }
 }
 
-function applySelectedColor(color) {
-    if (currentEditingStopId) {
-        updateColorFromText(currentEditingStopId, color);
-        closeColorPalette();
+function applySelectedColor(stopId, color) {
+    if (stopId) {
+        updateColorFromText(stopId, color);
+        // パレットは閉じずに、次の色選択のために開いたままにする
+        showNotification(`色を ${color} に変更しました`, 'success');
     }
 }
-
-// モーダル外をクリックしたら閉じる
-document.addEventListener('click', (e) => {
-    const modal = document.getElementById('color-palette-modal');
-    if (e.target === modal) {
-        closeColorPalette();
-    }
-});
 
 // グローバルスコープに関数を設定
 window.openColorPicker = openColorPicker;
@@ -585,7 +795,11 @@ window.validateColorInput = validateColorInput;
 window.addNewColorStop = addNewColorStop;
 window.showColorPalette = showColorPalette;
 window.closeColorPalette = closeColorPalette;
+window.closeAllColorPalettes = closeAllColorPalettes;
 window.applyCustomColor = applyCustomColor;
+window.applySelectedColor = applySelectedColor;
+window.createColorPalette = createColorPalette;
+window.positionColorPalette = positionColorPalette;
 
 function updateActiveStopColor(hexColor) {
     const activeStop = advancedGradientData.colorStops.find(stop => stop.id === advancedGradientData.activeStopId);
@@ -839,6 +1053,12 @@ function addNewColorStopAtPosition(position) {
 
 function removeColorStop(stopId) {
     if (advancedGradientData.colorStops.length > 2) {
+        // 対応するカラーパレットを削除
+        const palette = document.getElementById(`color-palette-${stopId}`);
+        if (palette) {
+            palette.remove();
+        }
+        
         advancedGradientData.colorStops = advancedGradientData.colorStops.filter(stop => stop.id !== stopId);
         if (advancedGradientData.activeStopId === stopId) {
             advancedGradientData.activeStopId = advancedGradientData.colorStops[0].id;

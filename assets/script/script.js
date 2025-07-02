@@ -56,6 +56,8 @@ function setActiveNavigation() {
             currentPage = 'margin-padding';
         } else if (currentPath.includes('/animation/')) {
             currentPage = 'animation';
+        } else if (currentPath.includes('/button/')) {
+            currentPage = 'button';
         }
         
         // アクティブクラスを設定
@@ -116,6 +118,7 @@ function initializeGenerators() {
     initializeTransformGenerator();
     initializeCSSGridGenerator();
     initializeMarginPaddingGenerator();
+    initializeButtonGenerator();
 }
 
 // 高度なグラデーションジェネレーター（cssgradient.io風）
@@ -3163,3 +3166,203 @@ function initializePageTopButton() {
 document.addEventListener('DOMContentLoaded', function() {
     initializePageTopButton();
 });
+
+// ボタンジェネレーター
+function initializeButtonGenerator() {
+    // ボタンジェネレーターが存在しない場合は終了
+    if (!document.getElementById('button-text')) {
+        return;
+    }
+
+    // 各要素を取得
+    const buttonText = document.getElementById('button-text');
+    const backgroundEnable = document.getElementById('button-background-enable');
+    const bgColor = document.getElementById('button-bg-color');
+    const borderEnable = document.getElementById('button-border-enable');
+    const borderWidth = document.getElementById('button-border-width');
+    const borderWidthValue = document.getElementById('button-border-width-value');
+    const borderColor = document.getElementById('button-border-color');
+    const textColor = document.getElementById('button-text-color');
+    const fontWeight = document.getElementById('button-font-weight');
+    const paddingVertical = document.getElementById('button-padding-vertical');
+    const paddingVerticalValue = document.getElementById('button-padding-vertical-value');
+    const paddingHorizontal = document.getElementById('button-padding-horizontal');
+    const paddingHorizontalValue = document.getElementById('button-padding-horizontal-value');
+    const borderRadius = document.getElementById('button-border-radius');
+    const borderRadiusValue = document.getElementById('button-border-radius-value');
+    const minWidthEnable = document.getElementById('button-min-width-enable');
+    const minWidth = document.getElementById('button-min-width');
+    const minWidthValue = document.getElementById('button-min-width-value');
+    const maxWidthEnable = document.getElementById('button-max-width-enable');
+    const maxWidth = document.getElementById('button-max-width');
+    const maxWidthValue = document.getElementById('button-max-width-value');
+    const preview = document.getElementById('button-preview');
+    const output = document.getElementById('button-output');
+
+    // 初期表示
+    updateButton();
+
+    // イベントリスナーを設定
+    buttonText.addEventListener('input', updateButton);
+    backgroundEnable.addEventListener('change', updateButton);
+    bgColor.addEventListener('input', updateButton);
+    borderEnable.addEventListener('change', updateButton);
+    borderWidth.addEventListener('input', function() {
+        borderWidthValue.textContent = this.value + 'px';
+        updateButton();
+    });
+    borderColor.addEventListener('input', updateButton);
+    textColor.addEventListener('input', updateButton);
+    fontWeight.addEventListener('change', updateButton);
+    paddingVertical.addEventListener('input', function() {
+        paddingVerticalValue.textContent = this.value + 'px';
+        updateButton();
+    });
+    paddingHorizontal.addEventListener('input', function() {
+        paddingHorizontalValue.textContent = this.value + 'px';
+        updateButton();
+    });
+    borderRadius.addEventListener('input', function() {
+        borderRadiusValue.textContent = this.value + 'px';
+        updateButton();
+    });
+    minWidthEnable.addEventListener('change', updateButton);
+    minWidth.addEventListener('input', function() {
+        minWidthValue.textContent = this.value + 'px';
+        updateButton();
+    });
+    maxWidthEnable.addEventListener('change', updateButton);
+    maxWidth.addEventListener('input', function() {
+        maxWidthValue.textContent = this.value + 'px';
+        updateButton();
+    });
+
+    function updateButton() {
+        const text = buttonText.value || 'ボタン';
+        const hasBackground = backgroundEnable.checked;
+        const backgroundColor = hasBackground ? bgColor.value : 'transparent';
+        const hasBorder = borderEnable.checked;
+        const borderWidthPx = hasBorder ? borderWidth.value + 'px' : '0px';
+        const borderColorValue = hasBorder ? borderColor.value : 'transparent';
+        const textColorValue = textColor.value;
+        const fontWeightValue = fontWeight.value;
+        const paddingV = paddingVertical.value + 'px';
+        const paddingH = paddingHorizontal.value + 'px';
+        const radiusValue = borderRadius.value + 'px';
+        const hasMinWidth = minWidthEnable.checked;
+        const minWidthValue = hasMinWidth ? minWidth.value + 'px' : 'auto';
+        const hasMaxWidth = maxWidthEnable.checked;
+        const maxWidthValue = hasMaxWidth ? maxWidth.value + 'px' : 'none';
+
+        // プレビュー更新
+        preview.textContent = text;
+        preview.style.backgroundColor = backgroundColor;
+        preview.style.border = `${borderWidthPx} solid ${borderColorValue}`;
+        preview.style.color = textColorValue;
+        preview.style.fontWeight = fontWeightValue;
+        preview.style.padding = `${paddingV} ${paddingH}`;
+        preview.style.borderRadius = radiusValue;
+        preview.style.minWidth = minWidthValue;
+        preview.style.maxWidth = maxWidthValue;
+        preview.style.fontSize = '16px';
+        preview.style.fontFamily = 'inherit';
+        preview.style.transition = 'all 0.3s ease';
+        preview.style.whiteSpace = 'normal';
+        preview.style.wordWrap = 'break-word';
+        preview.style.overflowWrap = 'break-word';
+        preview.style.lineHeight = '1.4';
+
+        // ホバー効果を追加
+        preview.style.cursor = 'pointer';
+        preview.onmouseenter = function() {
+            if (hasBackground) {
+                // 背景色を少し暗く
+                const darkColor = darkenColor(backgroundColor, 10);
+                this.style.backgroundColor = darkColor;
+            }
+        };
+        preview.onmouseleave = function() {
+            this.style.backgroundColor = backgroundColor;
+        };
+
+        // CSS出力
+        generateButtonCSS();
+    }
+
+    function generateButtonCSS() {
+        const text = buttonText.value || 'ボタン';
+        const hasBackground = backgroundEnable.checked;
+        const backgroundColor = hasBackground ? bgColor.value : 'transparent';
+        const hasBorder = borderEnable.checked;
+        const borderWidthPx = hasBorder ? borderWidth.value + 'px' : '0px';
+        const borderColorValue = hasBorder ? borderColor.value : 'transparent';
+        const textColorValue = textColor.value;
+        const fontWeightValue = fontWeight.value;
+        const paddingV = paddingVertical.value + 'px';
+        const paddingH = paddingHorizontal.value + 'px';
+        const radiusValue = borderRadius.value + 'px';
+        const hasMinWidth = minWidthEnable.checked;
+        const minWidthCSS = hasMinWidth ? minWidth.value + 'px' : 'auto';
+        const hasMaxWidth = maxWidthEnable.checked;
+        const maxWidthCSS = hasMaxWidth ? maxWidth.value + 'px' : 'none';
+
+        let css = '.button {\n';
+        css += `  background-color: ${backgroundColor};\n`;
+        css += `  border: ${borderWidthPx} solid ${borderColorValue};\n`;
+        css += `  color: ${textColorValue};\n`;
+        css += `  font-weight: ${fontWeightValue};\n`;
+        css += `  padding: ${paddingV} ${paddingH};\n`;
+        css += `  border-radius: ${radiusValue};\n`;
+        if (hasMinWidth) {
+            css += `  min-width: ${minWidthCSS};\n`;
+        }
+        if (hasMaxWidth) {
+            css += `  max-width: ${maxWidthCSS};\n`;
+        }
+        css += '  font-size: 16px;\n';
+        css += '  cursor: pointer;\n';
+        css += '  transition: all 0.3s ease;\n';
+        css += '  font-family: inherit;\n';
+        css += '  text-decoration: none;\n';
+        css += '  display: inline-block;\n';
+        css += '  text-align: center;\n';
+        css += '  white-space: normal;\n';
+        css += '  word-wrap: break-word;\n';
+        css += '  overflow-wrap: break-word;\n';
+        css += '  line-height: 1.4;\n';
+        css += '}\n\n';
+
+        // ホバー効果
+        if (hasBackground) {
+            const darkColor = darkenColor(backgroundColor, 10);
+            css += '.button:hover {\n';
+            css += `  background-color: ${darkColor};\n`;
+            css += '}\n\n';
+        }
+
+        css += '/* フォーカス時のスタイル */\n';
+        css += '.button:focus {\n';
+        css += '  outline: 2px solid #007bff;\n';
+        css += '  outline-offset: 2px;\n';
+        css += '}\n\n';
+
+        css += '/* アクティブ時のスタイル */\n';
+        css += '.button:active {\n';
+        css += '  transform: translateY(1px);\n';
+        css += '}';
+
+        output.value = css;
+    }
+
+    // 色を暗くする関数
+    function darkenColor(color, percent) {
+        const num = parseInt(color.replace("#", ""), 16);
+        const amt = Math.round(2.55 * percent);
+        const R = (num >> 16) - amt;
+        const G = (num >> 8 & 0x00FF) - amt;
+        const B = (num & 0x0000FF) - amt;
+        return "#" + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+            (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+            (B < 255 ? B < 1 ? 0 : B : 255)).toString(16).slice(1);
+    }
+}

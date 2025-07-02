@@ -90,7 +90,7 @@
 
 .gradient-controls {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 450px 1fr;
   gap: 30px;
   margin-bottom: 30px;
 }
@@ -472,7 +472,7 @@
 
 .preset-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-columns: repeat(2, minmax(120px, 1fr));
   gap: 10px;
   margin-top: 10px;
 }
@@ -504,35 +504,33 @@
   font-weight: 500;
 }
 
+@media (max-width: 1240px) {
+  .gradient-controls {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 20px;
+  }
+}
+
 @media (max-width: 768px) {
-    .gradient-controls {
-        display: flex;
-        flex-direction: column-reverse;
-        gap: 20px;
-    }
-    
-    .gradient-preview-large {
-        height: 200px;
-    }
-    
-        .preset-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    /* モバイル対応：カラーパレットのサイズ調整 */
-    .color-palette-popup {
-        min-width: 280px;
-        max-width: 320px;
-    }
-    
-    .color-palette-grid {
-        grid-template-columns: repeat(6, 1fr);
-    }
-    
-    .palette-color {
-        width: 32px;
-        height: 32px;
-    }
+  .gradient-preview-large {
+    height: 200px;
+  }
+
+  /* モバイル対応：カラーパレットのサイズ調整 */
+  .color-palette-popup {
+    min-width: 280px;
+    max-width: 320px;
+  }
+
+  .color-palette-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .palette-color {
+    width: 32px;
+    height: 32px;
+  }
 }
 
 /* Hidden color picker */

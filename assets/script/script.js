@@ -316,8 +316,14 @@ function renderGradientBar() {
             selectColorStop(stop.id);
         };
         
-        // ドラッグイベント
+        // ドラッグイベント（マウス + タッチ対応）
         marker.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            startDragColorStop(e, stop.id);
+        });
+        
+        marker.addEventListener('touchstart', (e) => {
             e.preventDefault();
             e.stopPropagation();
             startDragColorStop(e, stop.id);
@@ -1106,23 +1112,31 @@ function startDragColorStop(e, stopId) {
     // アクティブな色ストップに設定
     selectColorStop(stopId);
     
-    // ドキュメントレベルでマウスイベントを監視
-    document.addEventListener('mousemove', onDragColorStop);
+    // ドキュメントレベルでマウス・タッチイベントを監視
+    document.addEventListener('mousemove', onDragColorStop, { passive: false });
     document.addEventListener('mouseup', endDragColorStop);
+    document.addEventListener('touchmove', onDragColorStop, { passive: false });
+    document.addEventListener('touchend', endDragColorStop);
     
     // カーソルを変更
     document.body.style.cursor = 'grabbing';
     
     // テキスト選択を無効化
     document.body.style.userSelect = 'none';
+    
+    // デフォルトの動作を無効化
+    e.preventDefault();
 }
 
 // 色ストップのドラッグ中
 function onDragColorStop(e) {
     if (!isDraggingColorStop || !dragStopId || !gradientBarRect) return;
     
+    // タッチイベントとマウスイベントの座標を統一
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    
     // マウス位置からパーセンテージを計算
-    const relativeX = e.clientX - gradientBarRect.left;
+    const relativeX = clientX - gradientBarRect.left;
     const percentage = Math.max(0, Math.min(100, (relativeX / gradientBarRect.width) * 100));
     
     // 色ストップの位置を更新
@@ -1143,6 +1157,9 @@ function onDragColorStop(e) {
             }
         });
     }
+    
+    // デフォルトの動作を無効化（タッチスクロール防止）
+    e.preventDefault();
 }
 
 // 色ストップのドラッグ終了
@@ -1156,6 +1173,8 @@ function endDragColorStop() {
     // イベントリスナーを削除
     document.removeEventListener('mousemove', onDragColorStop);
     document.removeEventListener('mouseup', endDragColorStop);
+    document.removeEventListener('touchmove', onDragColorStop);
+    document.removeEventListener('touchend', endDragColorStop);
     
     // カーソルとテキスト選択を元に戻す
     document.body.style.cursor = '';

@@ -191,7 +191,6 @@ body {
 
 .tab-content {
   display: none;
-  padding: 30px;
 }
 
 .tab-content.active {
@@ -702,10 +701,6 @@ input[type="range"]::-moz-range-track {
 
   .generator-container .controls h2 {
     display: none;
-  }
-
-  .tab-content {
-    padding: 20px 16px 40px;
   }
 
   .preview-text {

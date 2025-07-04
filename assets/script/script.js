@@ -3256,33 +3256,45 @@ function initializeButtonGenerator() {
 
         // プレビュー更新
         preview.textContent = text;
-        preview.style.backgroundColor = backgroundColor;
-        preview.style.border = `${borderWidthPx} solid ${borderColorValue}`;
-        preview.style.color = textColorValue;
-        preview.style.fontWeight = fontWeightValue;
-        preview.style.padding = `${paddingV} ${paddingH}`;
-        preview.style.borderRadius = radiusValue;
-        preview.style.minWidth = minWidthValue;
-        preview.style.maxWidth = maxWidthValue;
-        preview.style.fontSize = '16px';
-        preview.style.fontFamily = 'inherit';
-        preview.style.transition = 'all 0.3s ease';
-        preview.style.whiteSpace = 'normal';
-        preview.style.wordWrap = 'break-word';
-        preview.style.overflowWrap = 'break-word';
-        preview.style.lineHeight = '1.4';
+        
+        // iOS Safari対応のため、まずリセット
+        preview.style.setProperty('-webkit-appearance', 'none', 'important');
+        preview.style.setProperty('-moz-appearance', 'none', 'important');
+        preview.style.setProperty('appearance', 'none', 'important');
+        preview.style.setProperty('outline', 'none', 'important');
+        preview.style.setProperty('text-transform', 'none', 'important');
+        preview.style.setProperty('letter-spacing', 'normal', 'important');
+        preview.style.setProperty('-webkit-font-smoothing', 'antialiased', 'important');
+        preview.style.setProperty('-moz-osx-font-smoothing', 'grayscale', 'important');
+        
+        // メインスタイルを重要度を指定して適用
+        preview.style.setProperty('background-color', backgroundColor, 'important');
+        preview.style.setProperty('border', `${borderWidthPx} solid ${borderColorValue}`, 'important');
+        preview.style.setProperty('color', textColorValue, 'important');
+        preview.style.setProperty('font-weight', fontWeightValue, 'important');
+        preview.style.setProperty('padding', `${paddingV} ${paddingH}`, 'important');
+        preview.style.setProperty('border-radius', radiusValue, 'important');
+        preview.style.setProperty('min-width', minWidthValue, 'important');
+        preview.style.setProperty('max-width', maxWidthValue, 'important');
+        preview.style.setProperty('font-size', '16px', 'important');
+        preview.style.setProperty('font-family', 'inherit', 'important');
+        preview.style.setProperty('transition', 'all 0.3s ease', 'important');
+        preview.style.setProperty('white-space', 'normal', 'important');
+        preview.style.setProperty('word-wrap', 'break-word', 'important');
+        preview.style.setProperty('overflow-wrap', 'break-word', 'important');
+        preview.style.setProperty('line-height', '1.4', 'important');
 
         // ホバー効果を追加
-        preview.style.cursor = 'pointer';
+        preview.style.setProperty('cursor', 'pointer', 'important');
         preview.onmouseenter = function() {
             if (hasBackground) {
                 // 背景色を少し暗く
                 const darkColor = darkenColor(backgroundColor, 10);
-                this.style.backgroundColor = darkColor;
+                this.style.setProperty('background-color', darkColor, 'important');
             }
         };
         preview.onmouseleave = function() {
-            this.style.backgroundColor = backgroundColor;
+            this.style.setProperty('background-color', backgroundColor, 'important');
         };
 
         // CSS出力
@@ -3330,6 +3342,18 @@ function initializeButtonGenerator() {
         css += '  word-wrap: break-word;\n';
         css += '  overflow-wrap: break-word;\n';
         css += '  line-height: 1.4;\n';
+        css += '  /* iOS Safari対応 */\n';
+        css += '  -webkit-appearance: none;\n';
+        css += '  -moz-appearance: none;\n';
+        css += '  appearance: none;\n';
+        css += '  outline: none;\n';
+        css += '  box-shadow: none;\n';
+        css += '  -webkit-box-shadow: none;\n';
+        css += '  -moz-box-shadow: none;\n';
+        css += '  text-transform: none;\n';
+        css += '  letter-spacing: normal;\n';
+        css += '  -webkit-font-smoothing: antialiased;\n';
+        css += '  -moz-osx-font-smoothing: grayscale;\n';
         css += '}\n\n';
 
         // ホバー効果
